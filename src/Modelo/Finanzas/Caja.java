@@ -6,7 +6,6 @@ public class Caja {
 
     private double cajaInicial;//Con cuanto arranca la caja en ese dia
     private double recaudacion;
-
     private HashSet<Compra> comprasDelDia;
 
     public Caja() {

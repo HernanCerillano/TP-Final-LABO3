@@ -14,46 +14,63 @@ import java.util.Scanner;
 public class Main {
 
     static Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) {
 
         menu();
 }
     public static void menu(){
-    Local loc = null;
-    int opcion;
-    do {
-        System.out.println("\nMenú:");
-        System.out.println("[1] Cargar local: ");
-        System.out.println("[2] Cargar personas: ");
-        System.out.println("[3] Cargar ropa");
-        System.out.println("[4] Salir");
+
+    boolean salir=false;
+
+    while(!salir) {
+        System.out.println("\n---------------------------------------------------\n");
+        System.out.println("\n- Menú Principal: \n");
+        System.out.println("[1] Gestionar Local\n");
+        System.out.println("[2] Realizar Compra\n");
+        System.out.println("[3] Salir\n");
         System.out.print("Ingrese su opción: ");
-        opcion = scanner.nextInt();
+
+        int opcion = scanner.nextInt();
+
         switch (opcion) {
             case 1:
-                loc=cargarLocal();
+                subMenuGestionDelLocal();
                 break;
             case 2:
-                int opcionAux = scanner.nextInt();
-                do {
-                    System.out.println("\nMenú de Personas:");
-                    System.out.println("[1] Cargar Empleado: ");
-                    System.out.println("[2] Cargar Cliente: ");
-                    System.out.println("[3] Volver al Menu: ");
-                    switch (opcionAux) {
-                        case 1:
-                            assert loc != null;
-                            loc.agregarEmpleado(agregarEmpleado());
-                            break;
-                        case 2:
-                            assert loc != null;
-                            loc.agregarCliente(agregarCliente());
-                            break;
-                        default:
-                            break;
-                    }
-                }while(opcionAux != 3);
+
+                break;
+            case 3:
+                salir=true;
+                System.out.println("\nSaliendo del programa....\n");
+                break;
+            default:
+                System.out.println("\nOpcion no valida. Por favor,Ingrese de nuevo la opcion que desea\n");
+                System.out.println("\n\n\n\n");
+                break;
+        }
+    }
+    }
+    public static void subMenuGestionDelLocal (){
+        boolean salir=false;
+
+        while(!salir){
+            System.out.println("\n---------------------------------------------------\n");
+            System.out.println("\n-- Gestion del Local: \n");
+            System.out.println("[1] Gestionar la informacion del Local\n");
+            System.out.println("[2] Gestionar Empleados\n");
+            System.out.println("[3] Ver el Registro de Clientes del Local\n");
+            System.out.println("[4] Gestionar el Stock de Ropa\n");
+            System.out.println("[5] Volver al Menu Principal\n");
+            System.out.print("Ingrese su opción: ");
+
+            int opcion = scanner.nextInt();
+
+            switch (opcion){
+            case 1:
+                subMenuInformacionDelLocal();
+                break;
+            case 2:
+                subMenuGestionEmpleados();
                 break;
             case 3:
 
@@ -61,12 +78,145 @@ public class Main {
             case 4:
 
                 break;
+            case 5:
+                salir=true;
+                break;
             default:
-
+                System.out.println("\nOpcion no valida. Por favor,Ingrese de nuevo la opcion que desea\n");
+                System.out.println("\n\n\n\n");
                 break;
         }
-    } while (opcion != 4);
-}
+        }
+    }
+    public static void subMenuInformacionDelLocal() {
+        boolean salir = false;
+
+        while (!salir) {
+            System.out.println("\n---------------------------------------------------\n");
+            System.out.println("\n--- Informacion del Local: \n");
+            System.out.println("[1] Ingresar la Informacion del Local\n");
+            System.out.println("[2] Ver la informacion del Local\n");
+            System.out.println("[3] Editar la informacion del Local\n");
+            System.out.println("[4] Volver al Menu de Gestion del Local\n");
+            System.out.print("Ingrese su opción: ");
+
+            int opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    boolean salirAux = false;
+                    while (!salirAux) {
+                        System.out.println("\n---------------------------------------------------\n");
+                        System.out.println("\n---- Editar Informacion del Local: \n");
+                        System.out.println("[1] Editar la Direccion\n");
+                        System.out.println("[2] Editar el Horario\n");
+                        System.out.println("[3] Volver al Menu de Informacion del Local\n");
+                        System.out.print("Ingrese su opción: ");
+                        int opcionAux = scanner.nextInt();
+                        switch (opcionAux) {
+                            case 1:
+                                System.out.println("Ejemplo1");
+                                break;
+                            case 2:
+                                System.out.println("Ejemplo2");
+                                break;
+                            case 3:
+                                salirAux=true;
+                                break;
+                            default:
+                                System.out.println("\nOpcion no valida. Por favor,Ingrese de nuevo la opcion que desea\n");
+                                System.out.println("\n\n\n\n");
+                                break;
+                        }
+                    }
+                    break;
+                case 4:
+                    salir = true;
+                    break;
+                default:
+                    System.out.println("\nOpcion no valida. Por favor,Ingrese de nuevo la opcion que desea\n");
+                    System.out.println("\n\n\n\n");
+                    break;
+            }
+        }
+    }
+    public static void subMenuGestionEmpleados(){
+        boolean salir=false;
+
+        while(!salir){
+            System.out.println("\n---------------------------------------------------\n");
+            System.out.println("\n--- Gestion de Empleados: \n");
+            System.out.println("[1] Ingresar un Nuevo Empleado\n");
+            System.out.println("[2] Ver Empleados\n");
+            System.out.println("[3] Editar Informacion de Empleados\n");
+            System.out.println("[4] Dar de Baja un Empleado\n");
+            System.out.println("[5] Dar de Alta un Empleado\n");
+            System.out.println("[6] Volver al Menu de Gestion del Local \n");
+            System.out.print("Ingrese su opción: ");
+
+            int opcion = scanner.nextInt();
+
+            switch (opcion){
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    ////MOSTRAMOS LOS EMPLEADOS
+                    boolean salirAux = false;
+                    while (!salirAux) {
+                        System.out.println("\n---------------------------------------------------\n");
+                        System.out.println("\n---- Editar Informacion de Empleado: \n");
+                        System.out.println("[1] Editar el Nombre y Apellido\n");
+                        System.out.println("[2] Editar el Horario\n");
+                        System.out.println("[3] Modificar el Salario\n");
+                        System.out.println("[4] Volver al Menu de Gestion de Empleados\n");
+                        System.out.print("Ingrese su opción: ");
+                        int opcionAux = scanner.nextInt();
+                        switch (opcionAux) {
+                            case 1:
+
+                                break;
+                            case 2:
+
+                                break;
+                            case 3:
+
+                                break;
+                            case 4:
+                                salirAux=true;
+                                break;
+                            default:
+                                System.out.println("\nOpcion no valida. Por favor,Ingrese de nuevo la opcion que desea\n");
+                                System.out.println("\n\n\n\n");
+                                break;
+                        }
+                    }
+                    break;
+                case 4:
+
+                    break;
+                case 5:
+
+                    break;
+                case 6:
+                    salir=true;
+                    break;
+                default:
+                    System.out.println("\nOpcion no valida. Por favor,Ingrese de nuevo la opcion que desea\n");
+                    System.out.println("\n\n\n\n");
+                    break;
+            }
+    }
+    }
     public static Ropa agregarRopa(){
         System.out.println("Dime el stock: ");
         int stock = scanner.nextInt();
@@ -185,6 +335,8 @@ public class Main {
         return local;
     }
 
+    /////////////////////////////////////////cargarCompra y comprobante sujetas a cambios////////////////////////////////////////
+
     public static Compra cargarCompra(Local local){
 
         Iterator<Empleado> it = local.getEmpleados().iterator();
@@ -215,7 +367,7 @@ public class Main {
 
     }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 

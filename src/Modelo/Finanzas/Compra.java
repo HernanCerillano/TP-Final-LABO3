@@ -27,7 +27,8 @@ public class Compra {
     private ArrayList<Ropa> itemsComprados;
     private double total;
     private Empleado empleadoAtencion;
-    
+
+
     public Compra(ArrayList<Ropa> itemsComprados, Empleado empleadoAtencion) {
         this.ordenDeCompra=calcularOrdenDeCompra();
         this.itemsComprados = itemsComprados;
@@ -36,6 +37,25 @@ public class Compra {
     }
 
 
+    public String getOrdenDeCompra (){
+        return this.ordenDeCompra;
+    }
+
+    public String getItemsComprados(){
+        String info="";
+        for(Ropa ro : this.itemsComprados){
+            info+=ro.getTipo()+", "+ro.getTalle()+", "+ro.getColorRopa()+" | $"+ro.getPrecio()+"\n";
+        }
+        return info;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public String getEmpleadoAtencion(){
+        return this.empleadoAtencion.getNombre()+" "+this.empleadoAtencion.getApellido();
+    }
     public double calcularTotal (){
         double total=0;
 
@@ -50,20 +70,8 @@ public class Compra {
         return UUID.randomUUID().toString();
     }
 
-    public String getOrdenDeCompra (){
-        return this.ordenDeCompra;
-    }
-
-    public String getItemsComprados(){
-        String info="";
-        for(Ropa ro : this.itemsComprados){
-            info+=ro.getTipo()+", "+ro.getTalle()+", "+ro.getColorRopa()+" | $"+ro.getPrecio()+"\n";
-        }
-        return info;
-    }
-
-    public String getEmpleadoAtencion(){
-        return this.empleadoAtencion.getNombre()+" "+this.empleadoAtencion.getApellido();
+    public void agregarItems(Ropa ro){
+        this.itemsComprados.add(ro);
     }
 
     public void crearPDF (Local local, Cliente cliente){
