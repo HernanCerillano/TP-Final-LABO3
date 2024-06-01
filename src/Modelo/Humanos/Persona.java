@@ -3,13 +3,13 @@ package Modelo.Humanos;
 public abstract class Persona {
 
     protected int id;
-    private static int contadorId = 0;
+    private static int contadorId = 1;
     private String nombre;
     private String apellido;
     private String dni;
 
     public Persona() {
-        this.id=0;
+        this.id=contadorId++;
         this.nombre="";
         this.apellido="";
         this.dni="";

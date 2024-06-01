@@ -8,6 +8,7 @@ import Modelo.Humanos.Empleado;
 import Modelo.Mercaderia.Ropa;
 import Modelo.Mercaderia.Talle;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -57,6 +58,16 @@ public class Local {
         return stockRopa;
     }
 
+    public String mostrarStockRopa() {
+        String info="";
+        int i=0;
+        for(Ropa ro : this.stockRopa){
+            info+="["+i+"] "+ro.getTipo()+", "+ro.getTalle()+", "+ro.getColorRopa()+" | $"+ro.getPrecio()+"\n";
+            i++;
+        }
+        return info;
+    }
+
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
@@ -73,13 +84,23 @@ public class Local {
         return empleados;
     }
 
+    public String imprimirEmpleados(){
+        String info="";
+
+        for(Empleado emp : this.empleados){
+            info+= emp.toString()+"\n";
+
+        }
+        return info;
+    }
+
     public HashSet<Cliente> getClientes() {
         return clientes;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////METODOS////////////////////////////////////////////////////
+    ///////////////////////////////METODOS////////////////////////////////////////////////////
 
 
     public void agregarEmpleado(Empleado e){
@@ -130,4 +151,83 @@ public class Local {
 
         return encontrado;
     }
+
+    public void AgregarRopaAlArchivo (){
+        ObjectOutputStream objectOutputStream = null;
+        try
+        {
+            FileOutputStream fileOutputStream = new FileOutputStream("Stock_De_Ropa.dat");
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            for(Ropa ro : this.stockRopa) {
+                objectOutputStream.writeObject(ro);
+            }
+
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch (IOException exception)
+        {
+            exception.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                objectOutputStream.close();
+            }
+            catch (IOException ex)
+            {
+
+            }
+
+        }
+    }
+    public void ObtenerRopaDelArchivo (){
+        ObjectInputStream objectInputStream = null;
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream("Stock_De_Ropa.dat");
+            objectInputStream = new ObjectInputStream(fileInputStream);
+
+            this.stockRopa.clear();
+
+            while (true) {
+                Ropa ropa = (Ropa) objectInputStream.readObject();
+                this.stockRopa.add(ropa);
+
+            }
+
+
+        } catch (EOFException ex)
+        {
+
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch (IOException exception)
+        {
+            exception.printStackTrace();
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new RuntimeException(e);
+        } finally
+        {
+            try
+            {
+                objectInputStream.close();
+            }
+            catch (IOException ex)
+            {
+
+            }
+
+        }
+    }
+
 }

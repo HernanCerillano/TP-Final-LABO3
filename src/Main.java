@@ -4,9 +4,7 @@ import Modelo.Humanos.Empleado;
 import Modelo.Local;
 import Modelo.Mercaderia.Ropa;
 import Modelo.Mercaderia.Talle;
-
 import java.io.*;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -15,10 +13,10 @@ public class Main {
 
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-
-        menu();
+        Local local = new Local();
+        menu(local);
 }
-    public static void menu(){
+    public static void menu(Local local){
 
     boolean salir=false;
 
@@ -31,13 +29,13 @@ public class Main {
         System.out.print("Ingrese su opción: ");
 
         int opcion = scanner.nextInt();
-
+        System.out.println("\n");
         switch (opcion) {
             case 1:
-                subMenuGestionDelLocal();
+                subMenuGestionDelLocal(local);
                 break;
             case 2:
-
+                realizarCompra(local);
                 break;
             case 3:
                 salir=true;
@@ -50,7 +48,7 @@ public class Main {
         }
     }
     }
-    public static void subMenuGestionDelLocal (){
+    public static void subMenuGestionDelLocal (Local local){
         boolean salir=false;
 
         while(!salir){
@@ -64,19 +62,19 @@ public class Main {
             System.out.print("Ingrese su opción: ");
 
             int opcion = scanner.nextInt();
-
+            System.out.println("\n");
             switch (opcion){
             case 1:
-                subMenuInformacionDelLocal();
+                subMenuInformacionDelLocal(local);
                 break;
             case 2:
-                subMenuGestionEmpleados();
+                subMenuGestionEmpleados(local);
                 break;
             case 3:
 
                 break;
             case 4:
-
+                subMenuGestionStockLocal(local);
                 break;
             case 5:
                 salir=true;
@@ -88,7 +86,7 @@ public class Main {
         }
         }
     }
-    public static void subMenuInformacionDelLocal() {
+    public static void subMenuInformacionDelLocal(Local local) {
         boolean salir = false;
 
         while (!salir) {
@@ -101,10 +99,10 @@ public class Main {
             System.out.print("Ingrese su opción: ");
 
             int opcion = scanner.nextInt();
-
+            System.out.println("\n");
             switch (opcion) {
                 case 1:
-
+                    local=cargarLocal();
                     break;
                 case 2:
 
@@ -146,7 +144,7 @@ public class Main {
             }
         }
     }
-    public static void subMenuGestionEmpleados(){
+    public static void subMenuGestionEmpleados(Local local){
         boolean salir=false;
 
         while(!salir){
@@ -161,16 +159,16 @@ public class Main {
             System.out.print("Ingrese su opción: ");
 
             int opcion = scanner.nextInt();
-
+            System.out.println("\n");
             switch (opcion){
                 case 1:
-
+                    cargarEmpleadosAlLocal(local);
                     break;
                 case 2:
-
+                    System.out.println(local.imprimirEmpleados());
                     break;
                 case 3:
-                    ////MOSTRAMOS LOS EMPLEADOS
+                    System.out.println(local.imprimirEmpleados());
                     boolean salirAux = false;
                     while (!salirAux) {
                         System.out.println("\n---------------------------------------------------\n");
@@ -181,6 +179,7 @@ public class Main {
                         System.out.println("[4] Volver al Menu de Gestion de Empleados\n");
                         System.out.print("Ingrese su opción: ");
                         int opcionAux = scanner.nextInt();
+                        System.out.println("\n");
                         switch (opcionAux) {
                             case 1:
 
@@ -217,6 +216,79 @@ public class Main {
             }
     }
     }
+    public static void subMenuGestionStockLocal (Local local){
+        boolean salir = false;
+
+        while (!salir) {
+            System.out.println("\n---------------------------------------------------\n");
+            System.out.println("\n--- Gestion de Stock del Local: \n");
+            System.out.println("[1] Ingresar Ropa al Stock\n");
+            System.out.println("[2] Ver el Stock Disponible\n");
+            System.out.println("[3] Dar de Baja Ropa del Stock\n");
+            System.out.println("[4] Volver al Menu de Gestion del Local\n");
+            System.out.print("Ingrese su opción: ");
+
+            int opcion = scanner.nextInt();
+            System.out.println("\n");
+            switch (opcion) {
+                case 1:
+                    cargarRopaAlStock(local);
+                    break;
+                case 2:
+                    local.ObtenerRopaDelArchivo();
+                    System.out.println(local.mostrarStockRopa());
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+                    salir = true;
+                    break;
+                default:
+                    System.out.println("\nOpcion no valida. Por favor,Ingrese de nuevo la opcion que desea\n");
+                    System.out.println("\n\n\n\n");
+                    break;
+            }
+            }
+    }
+    public static void subMenuRealizarCompra(Local local, Cliente cliente, Compra compra){
+        boolean salir=false;
+
+        while(!salir){
+            System.out.println("\n---------------------------------------------------\n");
+            System.out.println("\n-- Gestion de la Compra: \n");
+            System.out.println("[1] Ver la Lista de Compra\n");
+            System.out.println("[2] Editar Lista de Compra\n");
+            System.out.println("[3] Procesar la Compra\n");
+            System.out.print("Ingrese su opción: ");
+
+            int opcion = scanner.nextInt();
+            System.out.println("\n");
+            switch (opcion){
+                case 1:
+                    System.out.println(compra.getItemsComprados());
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    salir=true;
+                    compra.crearPDF(local,cliente);
+                    break;
+                default:
+                    System.out.println("\nOpcion no valida. Por favor,Ingrese de nuevo la opcion que desea\n");
+                    System.out.println("\n\n\n\n");
+                    break;
+            }
+            }
+    }
+    public static void realizarCompra(Local local){
+        Cliente cliente=agregarCliente();
+        ArrayList<Ropa>lista=crearListaDeCompras(local);
+        Compra compra= new Compra(lista,new Empleado());
+        subMenuRealizarCompra(local,cliente,compra);
+        compra.crearPDF(local,cliente);
+    }
     public static Ropa agregarRopa(){
         System.out.println("Dime el stock: ");
         int stock = scanner.nextInt();
@@ -233,46 +305,18 @@ public class Main {
         String color = scanner.nextLine();
         Ropa ropaAux = new Ropa(stock, prenda, talle, precio, color);
         return ropaAux;
-    } //Cargar una sola prenda
-    public static void cargarRopa(Local localAux){
+    }
+    public static void cargarRopaAlStock(Local localAux){
         int op = 0;
         while(op==0){
             localAux.agregarRopaAlStock(agregarRopa());
             System.out.println("Desea agregar otra prenda?\n(Escribi 0 si queres)");
             op=scanner.nextInt();
         }
-    }//Cargar un local de prendas
-    public static void mostrarRopa(ArrayList<Ropa> ropaAux){
-        if(ropaAux.isEmpty()){
-            System.out.println("No hay ropa");
-        }else{
-            System.out.println("Lista de ropa:");
-            for (Ropa ro: ropaAux){
-                System.out.println(ro);
-            }
-        }
-    }//Mostrar la ropa
-    public static void guardarRopaEnArchivoBinario(ArrayList<Ropa> ropaAux, String nombreArchivo) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombreArchivo))) {
-            oos.writeObject(ropaAux);
-            System.out.println("Ropa guardada en el archivo binario " + nombreArchivo);
-        } catch (IOException e) {
-            System.err.println("Error al guardar en el archivo binario: " + e.getMessage());
-        }
+        localAux.AgregarRopaAlArchivo();
     }
-    public static void mostrarRopaDesdeArchivoBinario(String nombreArchivo) {
-        ArrayList<Ropa> ropaAux = new ArrayList<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreArchivo))) {
-            ropaAux = (ArrayList<Ropa>) ois.readObject();
-            System.out.println("Ropa cargada desde el archivo binario " + nombreArchivo + ":");
-            mostrarRopa(ropaAux);
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error al leer del archivo binario: " + e.getMessage());
-        }
-    }
-
-    public static Empleado agregarEmpleado(){
-
+    public static Empleado crearEmpleado(){
+        scanner.nextLine();
         System.out.println("Dime el apellido");
         String apellido = scanner.nextLine();
 
@@ -281,10 +325,6 @@ public class Main {
 
         System.out.println("Dime el dni");
         String dni = scanner.nextLine();
-
-        System.out.println("Dime la disponibilidad: ");
-        boolean disponible = scanner.nextBoolean();
-        scanner.nextLine();
 
         System.out.println("Dime el horario: ");
         String horario = scanner.nextLine();
@@ -297,8 +337,18 @@ public class Main {
 
         return emp;
     }
-
+    public static void cargarEmpleadosAlLocal (Local localAux){
+        int op = 0;
+        while(op==0){
+            Empleado emp=crearEmpleado();
+            localAux.agregarEmpleado(emp);
+            System.out.println("Desea agregar otro Empleado?\n(Escribi 0 si queres)");
+            op=scanner.nextInt();
+        }
+    }
     public static Cliente agregarCliente(){
+
+        scanner.nextLine();
 
         System.out.println("Dime el apellido");
         String apellido = scanner.nextLine();
@@ -309,15 +359,10 @@ public class Main {
         System.out.println("Dime el dni");
         String dni = scanner.nextLine();
 
-        System.out.println("Dime el historial de compra: ");
-        double historial = scanner.nextDouble();
-        scanner.nextLine();
-
-        Cliente cliente = new Cliente (nombre, apellido, dni, historial);
+        Cliente cliente = new Cliente (nombre, apellido, dni, 0);
 
         return cliente;
     }
-
     public static Local cargarLocal(){
 
         System.out.println("Decime la calle del local: ");
@@ -334,40 +379,35 @@ public class Main {
 
         return local;
     }
+    public static ArrayList<Ropa> crearListaDeCompras(Local local){
 
-    /////////////////////////////////////////cargarCompra y comprobante sujetas a cambios////////////////////////////////////////
+        ArrayList <Ropa> prendasSeleccionadas= new ArrayList<>();
 
-    public static Compra cargarCompra(Local local){
+        int op = 0;
 
-        Iterator<Empleado> it = local.getEmpleados().iterator();
-        Empleado empleado = null;
-        if (it.hasNext()) {
-            empleado = it.next();
-        } else {
-            // x si no hay empleados en el local
-            throw new IllegalStateException("No hay empleados disponibles en el local.");
+        while(op==0){
+
+        local.ObtenerRopaDelArchivo();
+
+        System.out.println(local.mostrarStockRopa());
+
+        System.out.println("Seleccione el indice de la Prenda que desea:");
+
+        int index= scanner.nextInt();
+
+        if (index >= 0 && index < local.getStockRopa().size()) {
+            Ropa seleccionada = local.getStockRopa().get(index);
+                if (seleccionada.getStock() > 0) {
+                    prendasSeleccionadas.add(seleccionada);
+                    seleccionada.bajarUnStock();
+                }
         }
-        Compra compra= new Compra(local.getStockRopa(), empleado);
-
-        return compra;
-    }
-
-    public static void comprobante(Local local, Compra compra)
-    {
-        Iterator<Cliente> it = local.getClientes().iterator();
-        Cliente cliente = null;
-        if (it.hasNext()) {
-            cliente = it.next();
-        } else {
-            // x si no hay Cliente en el local
-            throw new IllegalStateException("No hay clientes disponibles en el local.");
+        System.out.print("¿Desea seleccionar otra prenda? Pulse 0 si asi lo desea : ");
+        op=scanner.nextInt();
         }
-
-        compra.crearPDF(local, cliente);
-
+        return prendasSeleccionadas;
     }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
+
 
 

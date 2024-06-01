@@ -1,6 +1,8 @@
 package Modelo.Humanos;
 
-public class Empleado extends Persona {
+import java.io.Serializable;
+
+public class Empleado extends Persona implements Serializable {
 
     private double salario;
     private boolean disponible;
