@@ -4,6 +4,8 @@ import Modelo.Humanos.Cliente;
 import Modelo.Humanos.Empleado;
 import Modelo.Local;
 import Modelo.Mercaderia.Ropa;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 import com.lowagie.text.Document;
@@ -21,13 +23,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import com.lowagie.text.Image;
 
-public class Compra {
+public class Compra implements Serializable {
 
     private String ordenDeCompra;
     private ArrayList<Ropa> itemsComprados;
     private double total;
     private Empleado empleadoAtencion;
-
 
     public Compra(ArrayList<Ropa> itemsComprados, Empleado empleadoAtencion) {
         this.ordenDeCompra=calcularOrdenDeCompra();
@@ -36,11 +37,9 @@ public class Compra {
         this.empleadoAtencion = empleadoAtencion;
     }
 
-
     public String getOrdenDeCompra (){
         return this.ordenDeCompra;
     }
-
     public String getItemsComprados(){
         String info="";
         for(Ropa ro : this.itemsComprados){
@@ -48,11 +47,9 @@ public class Compra {
         }
         return info;
     }
-
     public double getTotal() {
         return total;
     }
-
     public String getEmpleadoAtencion(){
         return this.empleadoAtencion.getNombre()+" "+this.empleadoAtencion.getApellido();
     }
@@ -65,15 +62,12 @@ public class Compra {
 
         return total;
     }
-
     private String calcularOrdenDeCompra (){
         return UUID.randomUUID().toString();
     }
-
     public void agregarItems(Ropa ro){
         this.itemsComprados.add(ro);
     }
-
     public void crearPDF (Local local, Cliente cliente){
 
         LocalDate fechaActual = LocalDate.now();

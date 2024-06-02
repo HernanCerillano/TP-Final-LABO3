@@ -1,8 +1,9 @@
 package Modelo.Finanzas;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class Caja {
+public class Caja implements Serializable {
 
     private double cajaInicial;//Con cuanto arranca la caja en ese dia
     private double recaudacion;

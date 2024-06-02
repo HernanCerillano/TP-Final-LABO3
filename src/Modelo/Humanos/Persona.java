@@ -1,6 +1,8 @@
 package Modelo.Humanos;
 
-public abstract class Persona {
+import java.io.Serializable;
+
+public abstract class Persona implements Serializable {
 
     protected int id;
     private static int contadorId = 1;
@@ -49,5 +51,10 @@ public abstract class Persona {
     @Override
     public String toString() {
         return "ID = " + id + ", Nombre = '" + nombre + '\'' + ", Apellido = '" + apellido + '\'' + ", DNI = '" + dni + '\'';
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
     }
 }

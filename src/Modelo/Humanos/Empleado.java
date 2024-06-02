@@ -1,9 +1,10 @@
 package Modelo.Humanos;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-public class Empleado extends Persona implements Serializable {
-
+public class Empleado extends Persona {
+    private static final long serialVersionUID = 5523004930622674062L;
     private double salario;
     private boolean disponible;
     private String horarios;
@@ -38,8 +39,25 @@ public class Empleado extends Persona implements Serializable {
         this.disponible = disponible;
     }
 
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    public void setHorarios(String horarios) {
+        this.horarios = horarios;
+    }
+
     @Override
     public String toString() {
         return super.toString()+" Salario = " + salario + ", Disponible? = " + disponible + ", Horarios ='" + horarios + "\n";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Empleado empleado = (Empleado) o;
+        return Double.compare(salario, empleado.salario) == 0 && disponible == empleado.disponible && Objects.equals(horarios, empleado.horarios);
+    }
+
 }

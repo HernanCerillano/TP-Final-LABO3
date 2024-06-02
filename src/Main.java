@@ -6,16 +6,43 @@ import Modelo.Mercaderia.Ropa;
 import Modelo.Mercaderia.Talle;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
 
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
+
         Local local = new Local();
+        local = local.ObtenerLocalDelArchivo();
+
+        if (local == null) {
+            ingresarInformacionInicial(local);
+        }
         menu(local);
+
 }
+    public static void ingresarInformacionInicial(Local local) {
+        local=new Local();
+        System.out.println("\nBienvenido! Parece que es la primera vez que ejecutas el programa.\n");
+        System.out.println("\nPor favor, ingresa la información del local.\n");
+
+        System.out.print("Dirección: \n");
+        String direccion = scanner.nextLine();
+        local.setDireccion(direccion);
+
+        System.out.print("Altura: \n");
+        int altura = scanner.nextInt();
+        local.setAltura(altura);
+        scanner.nextLine();
+
+        System.out.print("Horarios: \n");
+        String horarios = scanner.nextLine();
+        local.setHorarios(horarios);
+
+        local.AgregarLocalAlArchivo();
+
+    }
     public static void menu(Local local){
 
     boolean salir=false;
@@ -56,7 +83,7 @@ public class Main {
             System.out.println("\n-- Gestion del Local: \n");
             System.out.println("[1] Gestionar la informacion del Local\n");
             System.out.println("[2] Gestionar Empleados\n");
-            System.out.println("[3] Ver el Registro de Clientes del Local\n");
+            System.out.println("[3] Gestionar el Historial de Clientes del Local\n");
             System.out.println("[4] Gestionar el Stock de Ropa\n");
             System.out.println("[5] Volver al Menu Principal\n");
             System.out.print("Ingrese su opción: ");
@@ -71,7 +98,7 @@ public class Main {
                 subMenuGestionEmpleados(local);
                 break;
             case 3:
-
+                subMenuGestionClientesLocal (local);
                 break;
             case 4:
                 subMenuGestionStockLocal(local);
@@ -92,22 +119,19 @@ public class Main {
         while (!salir) {
             System.out.println("\n---------------------------------------------------\n");
             System.out.println("\n--- Informacion del Local: \n");
-            System.out.println("[1] Ingresar la Informacion del Local\n");
-            System.out.println("[2] Ver la informacion del Local\n");
-            System.out.println("[3] Editar la informacion del Local\n");
-            System.out.println("[4] Volver al Menu de Gestion del Local\n");
+
+            System.out.println("[1] Ver la informacion del Local\n");
+            System.out.println("[2] Editar la informacion del Local\n");
+            System.out.println("[3] Volver al Menu de Gestion del Local\n");
             System.out.print("Ingrese su opción: ");
 
             int opcion = scanner.nextInt();
             System.out.println("\n");
             switch (opcion) {
                 case 1:
-                    local=cargarLocal();
+                    System.out.println(local.imprimirInformacionDelLocal());
                     break;
                 case 2:
-
-                    break;
-                case 3:
                     boolean salirAux = false;
                     while (!salirAux) {
                         System.out.println("\n---------------------------------------------------\n");
@@ -119,10 +143,24 @@ public class Main {
                         int opcionAux = scanner.nextInt();
                         switch (opcionAux) {
                             case 1:
-                                System.out.println("Ejemplo1");
+                                System.out.println("La Actual Direccion es : " + local.getDireccion() + " " + local.getAltura() + ", Por cual desea cambiarla?\n");
+                                System.out.println("Calle: ");
+                                scanner.nextLine();
+                                String nuevaDire = scanner.nextLine();
+                                System.out.println("Altura: ");
+                                int nuevaAltu = scanner.nextInt();
+                                scanner.nextLine();
+                                local.setDireccion(nuevaDire);
+                                local.setAltura(nuevaAltu);
+                                local.AgregarLocalAlArchivo();
                                 break;
                             case 2:
-                                System.out.println("Ejemplo2");
+                                System.out.println("El horario actual es : " + local.getHorarios() +", Por cual desea cambiarlo?\n");
+                                System.out.println("Nuevo Horario: ");
+                                scanner.nextLine();
+                                String nuevoHorario = scanner.nextLine();
+                                local.setHorarios(nuevoHorario);
+                                local.AgregarLocalAlArchivo();
                                 break;
                             case 3:
                                 salirAux=true;
@@ -134,7 +172,7 @@ public class Main {
                         }
                     }
                     break;
-                case 4:
+                case 3:
                     salir = true;
                     break;
                 default:
@@ -165,10 +203,14 @@ public class Main {
                     cargarEmpleadosAlLocal(local);
                     break;
                 case 2:
+                    local.ObtenerEmpleadosDelArchivo();
                     System.out.println(local.imprimirEmpleados());
                     break;
                 case 3:
+                    local.ObtenerEmpleadosDelArchivo();
                     System.out.println(local.imprimirEmpleados());
+                    System.out.println("Ingrese el ID del Empleado que desea editar: ");
+                    int editar= scanner.nextInt();
                     boolean salirAux = false;
                     while (!salirAux) {
                         System.out.println("\n---------------------------------------------------\n");
@@ -182,13 +224,26 @@ public class Main {
                         System.out.println("\n");
                         switch (opcionAux) {
                             case 1:
-
+                                scanner.nextLine();
+                                System.out.println("Ingrese el nuevo nombre: ");
+                                String nuevoNombre=scanner.nextLine();
+                                System.out.println("Ingrese el nuevo apellido: ");
+                                String nuevoApellido=scanner.nextLine();
+                                local.editarNombreCompletoEmpleado(editar,nuevoNombre,nuevoApellido);
+                                local.AgregarEmpleadosAlArchivo();
                                 break;
                             case 2:
-
+                                scanner.nextLine();
+                                System.out.println("Ingrese el nuevo horario: ");
+                                String nuevoHorario=scanner.nextLine();
+                                local.editarHorariosEmpleado(editar,nuevoHorario);
+                                local.AgregarEmpleadosAlArchivo();
                                 break;
                             case 3:
-
+                                System.out.println("Ingrese el nuevo salario: ");
+                                double nuevoSalario=scanner.nextDouble();
+                                local.editarSalarioEmpleado(editar,nuevoSalario);
+                                local.AgregarEmpleadosAlArchivo();
                                 break;
                             case 4:
                                 salirAux=true;
@@ -201,10 +256,22 @@ public class Main {
                     }
                     break;
                 case 4:
-
+                    local.ObtenerEmpleadosDelArchivo();
+                    System.out.println(local.imprimirEmpleados());
+                    System.out.println("Ingrese el ID del Empleado que desea dar de Baja: ");
+                    int darDeBaja= scanner.nextInt();
+                    local.darDeBajaEmpleado(darDeBaja);
+                    local.AgregarEmpleadosAlArchivo();
+                    System.out.println("\nAccion Realizada con Exito! ");
                     break;
                 case 5:
-
+                    local.ObtenerEmpleadosDelArchivo();
+                    System.out.println(local.imprimirEmpleadosDadosDeBaja());
+                    System.out.println("Ingrese el ID del Empleado que desea dar de Alta: ");
+                    int darDeAlta= scanner.nextInt();
+                    local.darDeAltaEmpleado(darDeAlta);
+                    local.AgregarEmpleadosAlArchivo();
+                    System.out.println("\nAccion Realizada con Exito! ");
                     break;
                 case 6:
                     salir=true;
@@ -216,6 +283,37 @@ public class Main {
             }
     }
     }
+    public static void subMenuGestionClientesLocal (Local local){
+        boolean salir = false;
+
+        while (!salir) {
+            System.out.println("\n---------------------------------------------------\n");
+            System.out.println("\n--- Gestion de Clientes del Local: \n");
+            System.out.println("[1] Ver el Historial de Clientes del Local\n");
+            System.out.println("[2] Exportar el Historial de Clientes del Local en Formarto .JSON\n");
+            System.out.println("[3] Volver al Menu de Gestion del Local\n");
+            System.out.print("Ingrese su opción: ");
+
+            int opcion = scanner.nextInt();
+            System.out.println("\n");
+            switch (opcion) {
+                case 1:
+                    local.ObtenerClientesDelArchivo();
+                    System.out.println(local.getClientes());
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    salir = true;
+                    break;
+                default:
+                    System.out.println("\nOpcion no valida. Por favor,Ingrese de nuevo la opcion que desea\n");
+                    System.out.println("\n\n\n\n");
+                    break;
+            }
+        }
+    }
     public static void subMenuGestionStockLocal (Local local){
         boolean salir = false;
 
@@ -225,7 +323,9 @@ public class Main {
             System.out.println("[1] Ingresar Ropa al Stock\n");
             System.out.println("[2] Ver el Stock Disponible\n");
             System.out.println("[3] Dar de Baja Ropa del Stock\n");
-            System.out.println("[4] Volver al Menu de Gestion del Local\n");
+            System.out.println("[4] Dar de Alta Ropa del Stock\n");
+            System.out.println("[5] Exportar el Stock de Ropa en Formarto .JSON\n");
+            System.out.println("[6] Volver al Menu de Gestion del Local\n");
             System.out.print("Ingrese su opción: ");
 
             int opcion = scanner.nextInt();
@@ -242,6 +342,12 @@ public class Main {
 
                     break;
                 case 4:
+
+                    break;
+                case 5:
+
+                    break;
+                case 6:
                     salir = true;
                     break;
                 default:
@@ -283,10 +389,21 @@ public class Main {
             }
     }
     public static void realizarCompra(Local local){
+
+        System.out.println("------Inicio Registro Cliente------\n");
         Cliente cliente=agregarCliente();
+        System.out.println("------Cliente Registrado Exitosamente!------\n");
+
         ArrayList<Ropa>lista=crearListaDeCompras(local);
+
         Compra compra= new Compra(lista,new Empleado());
+
         subMenuRealizarCompra(local,cliente,compra);
+
+        cliente.agregarCompra(compra);
+        local.agregarCliente(cliente);
+        local.AgregarClientesAlArchivo();
+
         compra.crearPDF(local,cliente);
     }
     public static Ropa agregarRopa(){
@@ -339,12 +456,15 @@ public class Main {
     }
     public static void cargarEmpleadosAlLocal (Local localAux){
         int op = 0;
+        System.out.println("------Inicio Registro Empleado------\n");
         while(op==0){
             Empleado emp=crearEmpleado();
             localAux.agregarEmpleado(emp);
+            System.out.println("------Empleado Registrado Exitosamente!------\n");
             System.out.println("Desea agregar otro Empleado?\n(Escribi 0 si queres)");
             op=scanner.nextInt();
         }
+        localAux.AgregarEmpleadosAlArchivo();
     }
     public static Cliente agregarCliente(){
 
@@ -362,22 +482,6 @@ public class Main {
         Cliente cliente = new Cliente (nombre, apellido, dni, 0);
 
         return cliente;
-    }
-    public static Local cargarLocal(){
-
-        System.out.println("Decime la calle del local: ");
-        String direccion = scanner.nextLine();
-
-        System.out.println("Decime la altura: ");
-        int altura = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.println("Decime el horario de atencion: ");
-        String horario = scanner.nextLine();
-
-        Local local = new Local(direccion, altura, horario);
-
-        return local;
     }
     public static ArrayList<Ropa> crearListaDeCompras(Local local){
 

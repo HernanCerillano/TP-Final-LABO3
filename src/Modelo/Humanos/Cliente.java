@@ -24,18 +24,25 @@ public class Cliente extends Persona {
     public double getHistorialCompras() {
         return historialCompras;
     }
-
     public void agregarCompra(Compra e){
         this.compras.add(e);
     }
-
     public void setHistorialCompras(float historialCompras) {
         this.historialCompras = historialCompras;
     }
-
+    public ArrayList<Compra> getCompras() {
+        return compras;
+    }
+    public String imprimirCompras (){
+        String info="";
+        for(Compra com : this.compras){
+            info+=com.getItemsComprados();
+        }
+        return info;
+    }
     @Override
     public String toString() {
-        return "Cliente{" +
-                "historialCompras=" + historialCompras + super.toString();
+        return super.toString()+" Compras: "+imprimirCompras()+"\n";
+
     }
 }
