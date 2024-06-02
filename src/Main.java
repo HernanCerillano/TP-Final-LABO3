@@ -256,22 +256,34 @@ public class Main {
                     }
                     break;
                 case 4:
-                    local.ObtenerEmpleadosDelArchivo();
-                    System.out.println(local.imprimirEmpleados());
-                    System.out.println("Ingrese el ID del Empleado que desea dar de Baja: ");
-                    int darDeBaja= scanner.nextInt();
-                    local.darDeBajaEmpleado(darDeBaja);
-                    local.AgregarEmpleadosAlArchivo();
-                    System.out.println("\nAccion Realizada con Exito! ");
+                        local.ObtenerEmpleadosDelArchivo();
+                        System.out.println(local.imprimirEmpleados());
+                        System.out.println("Ingrese el ID del Empleado que desea dar de Baja: ");
+                        int darDeBaja = scanner.nextInt();
+                         if (!local.buscarIdEmpleado(darDeBaja)) {
+                        System.out.println("El ID ingresado no es válido. No se puede dar de baja a un empleado.");
+                        } else {
+                             local.darDeBajaEmpleado(darDeBaja);
+                             local.AgregarEmpleadosAlArchivo();
+                             System.out.println("\nAccion Realizada con Exito! ");
+                         }
                     break;
                 case 5:
-                    local.ObtenerEmpleadosDelArchivo();
-                    System.out.println(local.imprimirEmpleadosDadosDeBaja());
-                    System.out.println("Ingrese el ID del Empleado que desea dar de Alta: ");
-                    int darDeAlta= scanner.nextInt();
-                    local.darDeAltaEmpleado(darDeAlta);
-                    local.AgregarEmpleadosAlArchivo();
-                    System.out.println("\nAccion Realizada con Exito! ");
+                    if (!local.hayEmpleadosDadosDeBaja()) {
+                        System.out.println("No hay empleados dados de baja para dar de alta.");
+                    } else {
+                        local.ObtenerEmpleadosDelArchivo();
+                        System.out.println(local.imprimirEmpleadosDadosDeBaja());
+                        System.out.println("Ingrese el ID del Empleado que desea dar de Alta: ");
+                        int darDeAlta = scanner.nextInt();
+                        if (!local.buscarIdEmpleado(darDeAlta)) {
+                            System.out.println("El ID ingresado no es válido. No se puede dar de alta a un empleado.");
+                        } else {
+                        local.darDeAltaEmpleado(darDeAlta);
+                        local.AgregarEmpleadosAlArchivo();
+                        System.out.println("\nAccion Realizada con Exito! ");
+                    }
+                    }
                     break;
                 case 6:
                     salir=true;

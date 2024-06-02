@@ -5,20 +5,18 @@ import java.io.Serializable;
 public abstract class Persona implements Serializable {
 
     protected int id;
-    private static int contadorId = 1;
     private String nombre;
     private String apellido;
     private String dni;
 
     public Persona() {
-        this.id=contadorId++;
+        this.id=0;
         this.nombre="";
         this.apellido="";
         this.dni="";
     }
 
     public Persona(String nombre, String apellido, String dni) {
-        this.id=contadorId++;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -27,7 +25,9 @@ public abstract class Persona implements Serializable {
     public int getId() {
         return id;
     }
-
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getNombre() {
         return nombre;
     }

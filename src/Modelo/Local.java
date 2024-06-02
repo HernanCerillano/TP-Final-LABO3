@@ -76,7 +76,17 @@ public class Local implements Serializable{
     public String imprimirInformacionDelLocal (){
         return "Direccion: "+getDireccion()+" "+getAltura()+"\nHorarios: "+getHorarios()+"\n";
     }
+    private int obtenerUltimoIdEmpleado() {
+        int maxId = 0;
+        for (Empleado emp : empleados) {
+            if (emp.getId() > maxId) {
+                maxId = emp.getId();
+            }
+        }
+        return maxId;
+    }
     public void agregarEmpleado(Empleado e){
+        e.setId(obtenerUltimoIdEmpleado()+1);
         this.empleados.add(e);
     }
     public String imprimirEmpleados(){
@@ -99,8 +109,18 @@ public class Local implements Serializable{
         }
         return info;
     }
-    public void agregarCliente(Cliente e){
-        this.clientes.add(e);
+    private int obtenerUltimoIdCliente() {
+        int maxId = 0;
+        for (Cliente cli : clientes) {
+            if (cli.getId() > maxId) {
+                maxId = cli.getId();
+            }
+        }
+        return maxId;
+    }
+    public void agregarCliente(Cliente c){
+        c.setId(obtenerUltimoIdCliente()+1);
+        this.clientes.add(c);
     }
     public void agregarRopaAlStock (Ropa r){
         this.stockRopa.add(r);
@@ -154,7 +174,6 @@ public class Local implements Serializable{
 
         return encontrado;
     }
-
     public void editarNombreCompletoEmpleado(int ID,String nombre, String Apellido){
         for(Empleado emp : this.empleados){
             if(emp.isDisponible() && ID==emp.getId()){
@@ -178,6 +197,24 @@ public class Local implements Serializable{
 
             }
         }
+    }
+    public boolean hayEmpleadosDadosDeBaja() {
+        boolean hayDadosDeBaja = false;
+        for (Empleado empleado : empleados) {
+            if (!empleado.isDisponible()) {
+                hayDadosDeBaja = true;
+            }
+        }
+        return hayDadosDeBaja;
+    }
+    public boolean buscarIdEmpleado (int ID){
+        boolean rta=false;
+        for(Empleado emp : this.empleados){
+            if(emp.getId()==ID){
+                rta=true;
+            }
+        }
+        return rta;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
