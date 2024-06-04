@@ -29,19 +29,23 @@ public class Compra implements Serializable {
     private ArrayList<Ropa> itemsComprados;
     private double total;
     private Empleado empleadoAtencion;
+    private String fechaDeCompra;
 
+    public Compra() {
+    }
     public Compra(ArrayList<Ropa> itemsComprados, Empleado empleadoAtencion) {
         this.ordenDeCompra=calcularOrdenDeCompra();
         this.itemsComprados = itemsComprados;
         this.total = calcularTotal();
         this.empleadoAtencion = empleadoAtencion;
+        this.fechaDeCompra=calcularFecha();
     }
 
     public String getOrdenDeCompra (){
         return this.ordenDeCompra;
     }
     public String getItemsComprados(){
-        String info="";
+        String info="\n";
         for(Ropa ro : this.itemsComprados){
             info+=ro.getTipo()+", "+ro.getTalle()+", "+ro.getColorRopa()+" | $"+ro.getPrecio()+"\n";
         }
@@ -52,6 +56,9 @@ public class Compra implements Serializable {
     }
     public String getEmpleadoAtencion(){
         return this.empleadoAtencion.getNombre()+" "+this.empleadoAtencion.getApellido();
+    }
+    public String getFechaDeCompra() {
+        return fechaDeCompra;
     }
     public double calcularTotal (){
         double total=0;
@@ -65,18 +72,21 @@ public class Compra implements Serializable {
     private String calcularOrdenDeCompra (){
         return UUID.randomUUID().toString();
     }
+    private String calcularFecha(){
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String fechaFormateada = fechaActual.format(formatter);
+        return fechaFormateada;
+    }
     public void agregarItems(Ropa ro){
         this.itemsComprados.add(ro);
     }
     public void crearPDF (Local local, Cliente cliente){
 
-        LocalDate fechaActual = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String fechaFormateada = fechaActual.format(formatter);
 
         String currentDir = System.getProperty("user.dir");
         String folderPath = currentDir + "/Comprobantes";
-        String filePath = folderPath + "/"+fechaFormateada+"---"+cliente.getApellido()+"_"+cliente.getNombre()+".pdf";
+        String filePath = folderPath + "/"+this.fechaDeCompra+"---"+cliente.getApellido()+"_"+cliente.getNombre()+"---"+getOrdenDeCompra()+".pdf";
 
         File folder = new File(folderPath);
         if (!folder.exists()) {
@@ -117,7 +127,7 @@ public class Compra implements Serializable {
             cb.lineTo(559, 700);
             cb.stroke();
 
-            document.add(new Paragraph("\nOrden de compra: "+getOrdenDeCompra()+"\n\n"+"Fecha: " + fechaFormateada + "\n\nCliente: "+cliente.getApellido()+" "+cliente.getNombre()+"\n\n"));
+            document.add(new Paragraph("\nOrden de compra: "+getOrdenDeCompra()+"\n\n"+"Fecha: " + this.fechaDeCompra + "\n\nCliente: "+cliente.getApellido()+" "+cliente.getNombre()+"\n\n"));
 
             cb.setLineWidth(1f);
             cb.moveTo(36, 575);

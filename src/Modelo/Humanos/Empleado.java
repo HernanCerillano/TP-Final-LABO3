@@ -49,7 +49,7 @@ public class Empleado extends Persona {
 
     @Override
     public String toString() {
-        return super.toString()+" Salario = " + salario + ", Disponible? = " + disponible + ", Horarios ='" + horarios + "\n";
+        return super.toString()+" | Salario = " + salario + " | Disponible? = " + disponible + " | Horarios ='" + horarios + " | \n";
     }
     @Override
     public boolean equals(Object o) {

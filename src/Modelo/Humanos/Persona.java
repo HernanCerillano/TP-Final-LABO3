@@ -50,7 +50,7 @@ public abstract class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return "ID = " + id + ", Nombre = '" + nombre + '\'' + ", Apellido = '" + apellido + '\'' + ", DNI = '" + dni + '\'';
+        return "ID = " + id + " | Nombre Completo: "+getApellido()+" "+getNombre()+" | DNI = " + dni;
     }
 
     @Override

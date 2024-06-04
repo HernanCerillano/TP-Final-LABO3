@@ -6,43 +6,44 @@ import java.util.ArrayList;
 
 public class Cliente extends Persona {
 
-    private double historialCompras;
-    private ArrayList<Compra> compras;
+    private ArrayList<Compra> historialCompras;
+    private Compra compra;
 
     public Cliente (){
         super();
-        this.historialCompras= 0;
-        this.compras=new ArrayList<>();
+        this.historialCompras= new ArrayList<>();
+        this.compra=new Compra();
     }
 
-    public Cliente(String nombre, String apellido, String dni, double historialCompras) {
+    public Cliente(String nombre, String apellido, String dni) {
         super(nombre, apellido, dni);
-        this.historialCompras = historialCompras;
-        this.compras=new ArrayList<>();
+        this.historialCompras = new ArrayList<>();
     }
 
-    public double getHistorialCompras() {
+    public ArrayList<Compra> getHistorialCompras() {
         return historialCompras;
     }
-    public void agregarCompra(Compra e){
-        this.compras.add(e);
+    public void setCompra(Compra e){
+        this.compra=e;
     }
-    public void setHistorialCompras(float historialCompras) {
-        this.historialCompras = historialCompras;
+    public void agregarAlHistorialDeCompras(Compra e){
+        this.historialCompras.add(e);
     }
-    public ArrayList<Compra> getCompras() {
-        return compras;
-    }
-    public String imprimirCompras (){
-        String info="";
-        for(Compra com : this.compras){
-            info+=com.getItemsComprados();
+
+    public String mostrarHistorial (){
+        String info="\nHistorial de Compras: \n\n";
+        for(Compra com : historialCompras){
+            info+="Fecha de Compra: "+com.getFechaDeCompra()+"\n"+com.getItemsComprados()+"\n";
         }
         return info;
     }
+
     @Override
     public String toString() {
-        return super.toString()+" Compras: "+imprimirCompras()+"\n";
+        return super.toString()+"\n\n"+mostrarHistorial()+"\n";
 
     }
+
+
+
 }
