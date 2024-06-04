@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class Menu extends JFrame{
 
-    public Menu(){
+    public Menu(PrimeraVez primera){
         super("Menu Principal");
 
 
@@ -53,4 +53,5 @@ public class Menu extends JFrame{
     private JButton gestionarCajaButton;
     private JButton salirDelProgramaButton;
     private JPanel panelMenu;
+    private PrimeraVez primera;
 }
