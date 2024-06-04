@@ -20,6 +20,7 @@ public class GestionEmpleado extends JFrame implements InterfazGrafica {
     private JButton statusButton;
     private JButton agregarEmpleadoButton;
     private JPanel mainPanel;
+    private JButton exportarAJSonButton;
     private MenuDelLocal menuAnterior;
     private Local local;
 
@@ -59,6 +60,13 @@ public class GestionEmpleado extends JFrame implements InterfazGrafica {
             @Override
             public void actionPerformed(ActionEvent e) {
                 abrirAltaYBajaDeEmpleados();
+            }
+        });
+        exportarAJSonButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                local.exportarEmpleados();
+                JOptionPane.showMessageDialog(null, "Se exporto con exito");
             }
         });
     }

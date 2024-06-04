@@ -71,7 +71,7 @@ public class ElegirCliente extends JFrame implements InterfazGrafica {
         list1.setModel(modelo);
         modelo.removeAllElements();
         for(Cliente cli : local.getClientes()){
-            modelo.addElement(cli.toString()+"\n");
+            modelo.addElement(" "+cli.getDni()+" "+ cli.getNombre()+" "+ cli.getApellido()+"\n");
         }
     }
 

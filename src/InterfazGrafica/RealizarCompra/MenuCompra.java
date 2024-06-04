@@ -94,7 +94,9 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
         carrritoList.setModel(modelo);
         modelo.removeAllElements();
         for (Ropa ropa : carrito) {
-            modelo.addElement(ropa.toString() + "\n");
+            if(ropa.isDisponibilidad() && ropa.getStock()>0) {
+                modelo.addElement(ropa.toString() + "\n");
+            }
         }
     }
 

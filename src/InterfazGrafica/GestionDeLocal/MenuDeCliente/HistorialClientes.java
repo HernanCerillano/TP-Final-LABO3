@@ -52,7 +52,7 @@ public class HistorialClientes extends JFrame implements InterfazGrafica {
         list1.setModel(modelo);
         modelo.removeAllElements();
         for(Cliente cli : local.getClientes()){
-                modelo.addElement(cli.toString());
+                modelo.addElement(cli.getNombre()+" " +cli.getApellido()+" "+cli.getDni()+ " "+cli.mostrarHistorial());
         }
     }
     public void imprimirClientesFinal(){

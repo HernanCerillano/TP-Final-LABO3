@@ -121,26 +121,6 @@ public class Local implements Serializable, Exportable , FileManager {
         e.setId(obtenerUltimoIdEmpleado()+1);
         this.empleados.add(e);
     }
-    public String imprimirEmpleados(){
-        String info="";
-
-        for(Empleado emp : this.empleados){
-            if (emp.isDisponible()){
-                info+= emp.toString()+"\n";
-            }
-        }
-        return info;
-    }
-    public String imprimirEmpleadosDadosDeBaja(){
-        String info="";
-
-        for(Empleado emp : this.empleados){
-            if (!emp.isDisponible()){
-                info+= emp.toString()+"\n";
-            }
-        }
-        return info;
-    }
     private int obtenerUltimoIdCliente() {
         int maxId = 0;
         for (Cliente cli : clientes) {
@@ -162,15 +142,6 @@ public class Local implements Serializable, Exportable , FileManager {
             }
         }
         return maxId;
-    }
-    public boolean buscarIdPorRopa (int ID){
-        boolean rta=false;
-        for(Ropa ropa : this.stockRopa){
-            if(ropa.getId()==ID){
-                rta=true;
-            }
-        }
-        return rta;
     }
     public Ropa buscarRopaPorId(int id) {
         Ropa ropaEncontrada = null;
@@ -198,26 +169,6 @@ public class Local implements Serializable, Exportable , FileManager {
             stockRopa.add(r);
         }
     }
-    public String mostrarStockRopa() {
-        String info="";
-        int i=0;
-        for(Ropa ro : this.stockRopa){
-            if(ro.isDisponibilidad()){
-                info+=ro.toString();
-            }
-        }
-        return info;
-    }
-    public String mostrarStockRopaNoDisponible() {
-        String info="";
-        int i=0;
-        for(Ropa ro : this.stockRopa){
-            if(!ro.isDisponibilidad()){
-                info+=ro.toString();
-            }
-        }
-        return info;
-    }
     public void aumentarStockRopa(int idPrenda) {
         for (Ropa prenda : stockRopa) {
             if (prenda.getId() == idPrenda) {
@@ -227,8 +178,10 @@ public class Local implements Serializable, Exportable , FileManager {
     }
     public void bajarStockRopa(int idPrenda) {
         for (Ropa prenda : stockRopa) {
-            if (prenda.getId() == idPrenda) {
+            if (prenda.getId() == idPrenda && prenda.getStock()>0) {
                 prenda.setStock(prenda.getStock() - 1);
+            }else if(prenda.getStock()>=0){
+                prenda.setDisponibilidad(false);
             }
         }
     }
@@ -239,9 +192,6 @@ public class Local implements Serializable, Exportable , FileManager {
     public void retirarDinero(double retirar){
         this.caja.retirarDinero(retirar);
     }
-    public String imprimirRetiros(){
-        return this.caja.obtenerRetirosPorFecha();
-    }
     public double getRecaudacion(){
         return this.caja.getRecaudacion();
     }
@@ -249,7 +199,7 @@ public class Local implements Serializable, Exportable , FileManager {
         boolean empleadoEncontrado = false;
         for(Empleado emp : this.empleados) {
             if(emp.getId() == ID) {
-                emp.setDisponible(!emp.isDisponible()); // Cambiar la disponibilidad al estado contrario
+                emp.setDisponible(!emp.isDisponible());
                 empleadoEncontrado = true;
                 break;
             }
@@ -258,46 +208,17 @@ public class Local implements Serializable, Exportable , FileManager {
             throw new eEmpleadoNoEncontrado("No se encontró ningún empleado con el ID especificado.");
         }
     }
-    public String manejarDarDeBajaEmpleado(int ID) {
-        try {
-            darDeBajaEmpleado(ID);
-            return "Empleado dado de baja con éxito: " + ID;
-        } catch (eEmpleadoNoEncontrado e) {
-            return e.getMessage();
-        }
-    }
-    public void darDeBajaEmpleado(int ID) throws eEmpleadoNoEncontrado {
-        boolean empleadoEncontrado = false;
-        for(Empleado emp : this.empleados) {
-            if(emp.isDisponible() && emp.getId() == ID) {
-                emp.setDisponible(false);
-                empleadoEncontrado = true;
+    public void cambiarDisponibilidadRopa(int ID) throws eRopaNoEncontrada {
+        boolean ropaEncontrado = false;
+        for(Ropa rop: this.stockRopa) {
+            if(rop.getId() == ID) {
+                rop.setDisponibilidad(!rop.isDisponibilidad());
+                ropaEncontrado = true;
                 break;
             }
         }
-        if (!empleadoEncontrado) {
-            throw new eEmpleadoNoEncontrado("No se encontró ningún empleado con el ID especificado.");
-        }
-    }
-    public void darDeAltaEmpleado(int ID) throws eEmpleadoNoEncontrado {
-        boolean empleadoEncontrado = false;
-        for(Empleado emp : this.empleados) {
-            if(!emp.isDisponible() && emp.getId() == ID) {
-                emp.setDisponible(true);
-                empleadoEncontrado = true;
-                break;
-            }
-        }
-        if (!empleadoEncontrado) {
-            throw new eEmpleadoNoEncontrado("No se encontró ningún empleado con el ID especificado.");
-        }
-    }
-    public String manejarDarDeAltaEmpleado(int ID) {
-        try {
-            darDeAltaEmpleado(ID);
-            return "Empleado dado de alta con éxito: " + ID;
-        } catch (eEmpleadoNoEncontrado e) {
-            return e.getMessage();
+        if (!ropaEncontrado) {
+            throw new eRopaNoEncontrada("No se encontró ningún empleado con el ID especificado.");
         }
     }
     public void editarApellidoEmpleado(int ID,String apellido){
@@ -340,24 +261,6 @@ public class Local implements Serializable, Exportable , FileManager {
             }
         }
     }
-    public boolean hayEmpleadosDadosDeBaja() {
-        boolean hayDadosDeBaja = false;
-        for (Empleado empleado : empleados) {
-            if (!empleado.isDisponible()) {
-                hayDadosDeBaja = true;
-            }
-        }
-        return hayDadosDeBaja;
-    }
-    public boolean hayRopaDadaDeBaja() {
-        boolean hayDadosDeBaja = false;
-        for (Ropa ropa : this.stockRopa) {
-            if (!ropa.isDisponibilidad()) {
-                hayDadosDeBaja = true;
-            }
-        }
-        return hayDadosDeBaja;
-    }
     public void buscarRopaYSumarStock(int id, int stock) {
         for (Ropa ropaAux : this.stockRopa) {
             if (ropaAux.getId()==id) {
@@ -382,103 +285,6 @@ public class Local implements Serializable, Exportable , FileManager {
             }
         }
         return cliente;
-    }
-    public String imprimirClientes(){
-        String info="";
-        for(Cliente cli : this.clientes){
-            info+=cli.toString()+"\n";
-        }
-        return info;
-    }
-    public void cambiarPrecioRopa(int id, double nuevoPrecio) {
-        for (Ropa ropa : this.stockRopa) {
-            if (ropa.getId() == id) {
-                ropa.setPrecio(nuevoPrecio);
-                System.out.println("El precio de la prenda con ID " + id + " ha sido cambiado a " + nuevoPrecio);
-            }
-        }
-    }
-    public void cambiarStockRopa(int idPrenda, int nuevoStock) {
-        for (Ropa ropa : this.stockRopa) {
-            if (ropa.getId() == idPrenda) {
-                ropa.setStock(nuevoStock);
-            }
-        }
-    }
-    public String filtrarRopaPorTipo(String tipo){
-        String info="";
-
-        for(Ropa ro : this.stockRopa){
-            if(ro.getTipo().equalsIgnoreCase(tipo)) {
-                info += ro.toStringParaListaDeCompra()+"\n";
-
-            }
-        }
-        return info;
-    }
-    public String filtrarRopaPorTalle(Talle talle){
-        String info="";
-
-        for(Ropa ro : this.stockRopa){
-            if(ro.getTalle().equals(talle)) {
-                info += ro.toStringParaListaDeCompra()+"\n";
-
-            }
-        }
-        return info;
-    }
-    public String filtrarRopaPorColor(String color){
-        String info="";
-
-        for(Ropa ro : this.stockRopa){
-            if(ro.getColorRopa().equalsIgnoreCase(color)) {
-                info += ro.toStringParaListaDeCompra()+"\n";
-
-            }
-        }
-        return info;
-    }
-    public void darDeBajaRopa(int ID) throws eRopaNoEncontrada {
-        boolean encontrada = false;
-        for (Ropa ropa : this.stockRopa) {
-            if (ropa.isDisponibilidad() && ropa.getId() == ID) {
-                ropa.setDisponibilidad(false);
-                encontrada = true;
-                break;
-            }
-        }
-        if (!encontrada) {
-            throw new eRopaNoEncontrada("La prenda con ID: " + ID + " no se encuentra en el stock o ya está dada de baja.");
-        }
-    }
-    public String manejarDarDeBajaRopa(int ID) {
-        try {
-            darDeBajaRopa(ID);
-            return "Ropa dada de baja con éxito: " + ID;
-        } catch (eRopaNoEncontrada e) {
-            return e.getMessage();
-        }
-    }
-    public void darDeAltaRopa(int ID) throws eRopaNoEncontrada {
-        boolean encontrada = false;
-        for (Ropa ropa : this.stockRopa) {
-            if (!ropa.isDisponibilidad() && ropa.getId() == ID) {
-                ropa.setDisponibilidad(true);
-                encontrada = true;
-                break;
-            }
-        }
-        if (!encontrada) {
-            throw new eRopaNoEncontrada("La prenda con ID: " + ID + " no se encuentra en el stock o ya está dada de alta.");
-        }
-    }
-    public String manejarDarDeAltaRopa(int ID) {
-        try {
-            darDeAltaRopa(ID);
-            return "Ropa dada de alta con éxito: " + ID;
-        } catch (eRopaNoEncontrada e) {
-            return e.getMessage();
-        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////

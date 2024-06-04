@@ -3,6 +3,7 @@ package InterfazGrafica.GestionDeLocal.MenuStock;
 import InterfazGrafica.GestionDeLocal.MenuStock.OpcionesDeStock.AgregarYVerStock;
 import InterfazGrafica.GestionDeLocal.MenuStock.OpcionesDeStock.BajarOSubirStock;
 import InterfazGrafica.GestionDeLocal.MenuDelLocal;
+import InterfazGrafica.GestionDeLocal.MenuStock.OpcionesDeStock.DisponibilidadRopa;
 import InterfazGrafica.InterfazGrafica;
 import Modelo.Local;
 
@@ -16,6 +17,7 @@ public class MenuDeStock extends JFrame implements InterfazGrafica {
     private JButton exportarAJSonElButton;
     private JButton volverButton;
     private JPanel mainPanel;
+    private JButton darDeAltaYButton;
     private Local local;
     private MenuDelLocal menuAnterior;
 
@@ -52,6 +54,12 @@ public class MenuDeStock extends JFrame implements InterfazGrafica {
                 abrirAltaYBajaStock(local);
             }
         });
+        darDeAltaYButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirAltaYBaja(local);
+            }
+        });
     }
     public void abrirAgregarStock(Local local){
 
@@ -65,6 +73,14 @@ public class MenuDeStock extends JFrame implements InterfazGrafica {
     public void abrirAltaYBajaStock(Local local){
 
         JFrame frame = new BajarOSubirStock(this, local);
+        frame.setSize(1000, 600);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }
+    public void abrirAltaYBaja(Local local){
+
+        JFrame frame = new DisponibilidadRopa(this, local);
         frame.setSize(1000, 600);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

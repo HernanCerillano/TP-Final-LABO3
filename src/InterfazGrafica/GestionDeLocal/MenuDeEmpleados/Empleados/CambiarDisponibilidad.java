@@ -56,7 +56,7 @@ public class CambiarDisponibilidad extends JFrame implements InterfazGrafica {
         modelo.removeAllElements();
         for(Empleado emp : local.getEmpleados()){
             if (emp.isDisponible()){
-                modelo.addElement(emp.getId());
+                modelo.addElement(emp.getId()+ " "+ emp.getNombre() + " "+emp.getApellido());
             }
         }
     }
@@ -67,7 +67,7 @@ public class CambiarDisponibilidad extends JFrame implements InterfazGrafica {
         modelo.removeAllElements();
         for(Empleado emp : local.getEmpleados()){
             if (false==emp.isDisponible()){
-                modelo.addElement(emp.getId());
+                modelo.addElement(emp.getId()+ " "+ emp.getNombre() + " "+emp.getApellido());
             }
         }
     }
