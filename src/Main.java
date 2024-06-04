@@ -1,9 +1,13 @@
+import InterfazGrafica.Menu;
 import Modelo.Humanos.Cliente;
 import Modelo.Finanzas.Compra;
 import Modelo.Humanos.Empleado;
 import Modelo.Local;
 import Modelo.Mercaderia.Ropa;
 import Modelo.Mercaderia.Talle;
+
+import javax.swing.*;
+import javax.swing.plaf.BorderUIResource;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,14 +17,24 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
 
-        Local local = new Local();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JFrame frame = new Menu();
+                frame.setSize(1000, 600);
+                frame.setVisible(true);
+                frame.setLocationRelativeTo(null);
+            }
+        });
+
+       /* Local local = new Local();
         local = local.ObtenerLocalDelArchivo();
 
         if (local == null) {
             ingresarInformacionInicial(local);
         }
         menu(local);
-
+*/
 }
     public static void ingresarInformacionInicial(Local local) {
         local=new Local();
