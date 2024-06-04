@@ -216,6 +216,22 @@ public class Local implements Serializable{
         }
         return rta;
     }
+    public Cliente buscarClientePorDni(String DNI){
+        Cliente cliente=null;
+        for (Cliente cli : this.clientes){
+            if(cli.getDni().equals(DNI)){
+                cliente=cli;
+            }
+        }
+        return cliente;
+    }
+    public String imprimirClientes(){
+        String info="";
+        for(Cliente cli : this.clientes){
+            info+=cli.toString()+"\n";
+        }
+        return info;
+    }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -273,7 +289,6 @@ public class Local implements Serializable{
         } catch (EOFException ex) {
 
         } catch (FileNotFoundException ex) {
-
             ex.printStackTrace();
         } catch (IOException ex) {
 
@@ -478,7 +493,7 @@ public class Local implements Serializable{
 
         }
     }
-    public void ObtenerClientesDelArchivo (){
+    public void ObtenerClientesDelArchivo() {
         ObjectInputStream objectInputStream = null;
 
         try {
@@ -490,36 +505,28 @@ public class Local implements Serializable{
             while (true) {
                 Cliente cliente = (Cliente) objectInputStream.readObject();
                 this.clientes.add(cliente);
-
             }
+        } catch (EOFException ex) {
 
+        } catch (FileNotFoundException ex) {
 
-        } catch (EOFException ex)
-        {
-
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch (IOException exception)
-        {
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream("Registro_Clientes.dat");
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException | ClassNotFoundException exception) {
             exception.printStackTrace();
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        } finally
-        {
-            try
-            {
-                objectInputStream.close();
+        } finally {
+            if (objectInputStream != null) {
+                try {
+                    objectInputStream.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
-            catch (IOException ex)
-            {
-
-            }
-
         }
     }
 }

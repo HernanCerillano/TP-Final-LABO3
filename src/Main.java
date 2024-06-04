@@ -31,30 +31,35 @@ public class Main {
         local = local.ObtenerLocalDelArchivo();
 
         if (local == null) {
-            ingresarInformacionInicial(local);
+
+            local=ingresarInformacionInicial();
+
         }
+        local.AgregarLocalAlArchivo();
+
         menu(local);
 */
 }
-    public static void ingresarInformacionInicial(Local local) {
-        local=new Local();
+    public static Local ingresarInformacionInicial() {
+
         System.out.println("\nBienvenido! Parece que es la primera vez que ejecutas el programa.\n");
         System.out.println("\nPor favor, ingresa la información del local.\n");
 
         System.out.print("Dirección: \n");
         String direccion = scanner.nextLine();
-        local.setDireccion(direccion);
+
 
         System.out.print("Altura: \n");
         int altura = scanner.nextInt();
-        local.setAltura(altura);
+
         scanner.nextLine();
 
         System.out.print("Horarios: \n");
         String horarios = scanner.nextLine();
-        local.setHorarios(horarios);
 
-        local.AgregarLocalAlArchivo();
+        Local local=new Local(direccion,altura,horarios);
+
+        return local;
 
     }
     public static void menu(Local local){
@@ -76,7 +81,7 @@ public class Main {
                 subMenuGestionDelLocal(local);
                 break;
             case 2:
-                realizarCompra(local);
+                menuRealizarCompra(local);
                 break;
             case 3:
                 salir=true;
@@ -143,6 +148,8 @@ public class Main {
             System.out.println("\n");
             switch (opcion) {
                 case 1:
+
+                    local=local.ObtenerLocalDelArchivo();
                     System.out.println(local.imprimirInformacionDelLocal());
                     break;
                 case 2:
@@ -325,7 +332,7 @@ public class Main {
             switch (opcion) {
                 case 1:
                     local.ObtenerClientesDelArchivo();
-                    System.out.println(local.getClientes());
+                    System.out.println(local.imprimirClientes());
                     break;
                 case 2:
 
@@ -405,6 +412,10 @@ public class Main {
                     break;
                 case 3:
                     salir=true;
+                    cliente.setCompra(compra);
+                    cliente.agregarAlHistorialDeCompras(compra);
+                    local.agregarCliente(cliente);
+                    local.AgregarClientesAlArchivo();
                     compra.crearPDF(local,cliente);
                     break;
                 default:
@@ -414,11 +425,23 @@ public class Main {
             }
             }
     }
-    public static void realizarCompra(Local local){
+    public static void menuRealizarCompra(Local local){
 
-        System.out.println("------Inicio Registro Cliente------\n");
-        Cliente cliente=agregarCliente();
-        System.out.println("------Cliente Registrado Exitosamente!------\n");
+        scanner.nextLine();
+
+        System.out.println("Ingrese el DNI: ");
+        String buscarDni= scanner.nextLine();
+
+        local.ObtenerClientesDelArchivo();
+
+        Cliente cliente=local.buscarClientePorDni(buscarDni);
+
+        if(cliente==null) {
+            cliente = agregarCliente();
+        }
+        else{
+            System.out.println(cliente.mostrarHistorial());
+        }
 
         ArrayList<Ropa>lista=crearListaDeCompras(local);
 
@@ -426,11 +449,6 @@ public class Main {
 
         subMenuRealizarCompra(local,cliente,compra);
 
-        cliente.agregarCompra(compra);
-        local.agregarCliente(cliente);
-        local.AgregarClientesAlArchivo();
-
-        compra.crearPDF(local,cliente);
     }
     public static Ropa agregarRopa(){
         System.out.println("Dime el stock: ");
@@ -493,8 +511,7 @@ public class Main {
         localAux.AgregarEmpleadosAlArchivo();
     }
     public static Cliente agregarCliente(){
-
-        scanner.nextLine();
+        System.out.println("------Inicio Registro Cliente------\n");
 
         System.out.println("Dime el apellido");
         String apellido = scanner.nextLine();
@@ -505,8 +522,8 @@ public class Main {
         System.out.println("Dime el dni");
         String dni = scanner.nextLine();
 
-        Cliente cliente = new Cliente (nombre, apellido, dni, 0);
-
+        Cliente cliente = new Cliente (nombre, apellido, dni);
+        System.out.println("------Cliente Registrado Exitosamente!------\n");
         return cliente;
     }
     public static ArrayList<Ropa> crearListaDeCompras(Local local){
@@ -514,7 +531,7 @@ public class Main {
         ArrayList <Ropa> prendasSeleccionadas= new ArrayList<>();
 
         int op = 0;
-
+        System.out.println("------Inicio Lista de Compras------\n");
         while(op==0){
 
         local.ObtenerRopaDelArchivo();
@@ -535,6 +552,7 @@ public class Main {
         System.out.print("¿Desea seleccionar otra prenda? Pulse 0 si asi lo desea : ");
         op=scanner.nextInt();
         }
+
         return prendasSeleccionadas;
     }
 }
