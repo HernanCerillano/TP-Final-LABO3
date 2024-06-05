@@ -1,4 +1,5 @@
 import InterfazGrafica.Menu;
+import InterfazGrafica.PrimerMenu;
 import Modelo.Humanos.Cliente;
 import Modelo.Finanzas.Compra;
 import Modelo.Humanos.Empleado;
@@ -20,7 +21,7 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new Menu();
+                JFrame frame = new PrimerMenu();
                 frame.setSize(1000, 600);
                 frame.setVisible(true);
                 frame.setLocationRelativeTo(null);
