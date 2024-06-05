@@ -14,6 +14,9 @@ public class VerLocal extends JFrame{
     private JPanel panel1;
     private JButton editarLocalButton;
     private JButton verLocalButton;
+    private JTextField direccionText;
+    private JTextField horarioText;
+    private JTextField alturaText;
 
     public VerLocal(MenuLocal menuAnterior,Local local){
         super("Gestion del Local");
@@ -34,8 +37,15 @@ public class VerLocal extends JFrame{
                 JOptionPane.showMessageDialog(null, local.imprimirInformacionDelLocal());
             }
         });
+        editarLocalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                local.setDireccion(direccionText.getText());
+                local.setAltura(Integer.parseInt(alturaText.getText()));
+                local.setHorarios(horarioText.getText());
+            }
+        });
     }
-
 
     private void volverAtras(){
         menuAnterior.setVisible(true);
