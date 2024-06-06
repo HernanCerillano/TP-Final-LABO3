@@ -1,16 +1,17 @@
-package InterfazGrafica.MenuLocal;
+package InterfazGrafica.GestionDeLocal;
 
+import InterfazGrafica.GestionDeLocal.MenuStock.MenuDeStock;
 import InterfazGrafica.InterfazGrafica;
 import InterfazGrafica.Menu;
-import InterfazGrafica.MenuLocal.MenuDeEmpleados.GestionEmpleado;
-import InterfazGrafica.MenuLocal.VerLocal.VerLocal;
+import InterfazGrafica.GestionDeLocal.MenuDeCliente.HistorialClientes;
+import InterfazGrafica.GestionDeLocal.VerLocal.VerLocal;
 import Modelo.Local;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MenuLocal extends JFrame implements InterfazGrafica {
+public class MenuDelLocal extends JFrame implements InterfazGrafica {
     private Menu menuAnterior;
     private JButton historialDeClientesButton;
     private JButton volverAlMenuPrincipalButton;
@@ -18,9 +19,10 @@ public class MenuLocal extends JFrame implements InterfazGrafica {
     private JButton gestionarEmpleadosButton;
     private JButton verLocalButton;
     private JPanel mainPanel;
+    private JButton manejarCajaButton;
     private Local local;
 
-    public MenuLocal(Menu menuAnterior, Local local){
+    public MenuDelLocal(Menu menuAnterior, Local local){
         super("Menu de Gestion General");
         this.local=local;
         this.menuAnterior = menuAnterior;
@@ -44,6 +46,24 @@ public class MenuLocal extends JFrame implements InterfazGrafica {
             abrirGestionEmpleados(local);
             }
         });
+        historialDeClientesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirHistorialClientes(local);
+            }
+        });
+        gestionarStockDeRopaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirGestionDeStock(local);
+            }
+        });
+        manejarCajaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
 
@@ -58,7 +78,25 @@ public class MenuLocal extends JFrame implements InterfazGrafica {
 
     public void abrirGestionEmpleados(Local local){
 
-        JFrame frame = new GestionEmpleado(this, local);
+        JFrame frame = new HistorialClientes(this, local);
+        frame.setSize(1000, 600);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }
+
+    public void abrirHistorialClientes(Local local){
+
+        JFrame frame = new HistorialClientes(this, local);
+        frame.setSize(1000, 600);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }
+
+    public void abrirGestionDeStock(Local local){
+
+        JFrame frame = new MenuDeStock(this, local);
         frame.setSize(1000, 600);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

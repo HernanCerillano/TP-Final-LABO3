@@ -48,6 +48,11 @@ public class Local implements Serializable{
     public int getAltura() {
         return altura;
     }
+
+    public Caja getCaja() {
+        return caja;
+    }
+
     public String getHorarios() {
         return horarios;
     }
@@ -77,6 +82,7 @@ public class Local implements Serializable{
     public String imprimirInformacionDelLocal (){
         return "Direccion: "+getDireccion()+" "+getAltura()+"\nHorarios: "+getHorarios()+"\n";
     }
+
     private int obtenerUltimoIdEmpleado() {
         int maxId = 0;
         for (Empleado emp : empleados) {
@@ -110,44 +116,6 @@ public class Local implements Serializable{
         }
         return info;
     }
-    private int obtenerUltimoIdCliente() {
-        int maxId = 0;
-        for (Cliente cli : clientes) {
-            if (cli.getId() > maxId) {
-                maxId = cli.getId();
-            }
-        }
-        return maxId;
-    }
-    public void agregarCliente(Cliente c){
-        c.setId(obtenerUltimoIdCliente()+1);
-        this.clientes.add(c);
-    }
-    public void agregarRopaAlStock (Ropa r){
-        this.stockRopa.add(r);
-    }
-    public String mostrarStockRopa() {
-        String info="";
-        int i=0;
-        for(Ropa ro : this.stockRopa){
-            info+="["+i+"] "+ro.getTipo()+", "+ro.getTalle()+", "+ro.getColorRopa()+" | $"+ro.getPrecio()+"\n";
-            i++;
-        }
-        return info;
-    }
-    public void procesarCompra(Compra c){
-        this.caja.agregarCompras(c);
-    }
-    public void comprarUnaRopa(Ropa ropa){
-        try{
-            ropa.validarStock(ropa.getStock());
-            ropa.bajarUnStock();
-            caja.agregarDinero(ropa.getPrecio());
-            caja.agregarRecaudacion(ropa.getPrecio());
-        }catch (eSinStock e){
-            e.printStackTrace();
-        }
-    }
     public void darDeBajaEmpleado(int ID){
         for(Empleado emp : this.empleados){
             if(emp.isDisponible() && emp.getId()==ID){
@@ -161,19 +129,6 @@ public class Local implements Serializable{
                 emp.setDisponible(true);
             }
         }
-    }
-    public boolean verificarDisponibilidad (Talle talle, String tipo){
-        boolean encontrado = false;
-
-        for(Ropa ropa : this.stockRopa){
-            if(ropa.getTalle()==talle && ropa.getTipo().equalsIgnoreCase(tipo)){
-                if(ropa.getStock()>0){
-                    encontrado=true;
-                }
-            }
-        }
-
-        return encontrado;
     }
     public void editarNombreCompletoEmpleado(int ID,String nombre, String Apellido){
         for(Empleado emp : this.empleados){
@@ -190,7 +145,6 @@ public class Local implements Serializable{
             }
         }
     }
-
     public void editarNombreEmpleado(int ID,String nombre){
         for(Empleado emp : this.empleados){
             if(emp.isDisponible() && ID==emp.getId()){
@@ -198,8 +152,6 @@ public class Local implements Serializable{
             }
         }
     }
-
-
     public void editarDniEmpleado(int ID,String dni){
         for(Empleado emp : this.empleados){
             if(emp.isDisponible() && ID==emp.getId()){
@@ -207,7 +159,6 @@ public class Local implements Serializable{
             }
         }
     }
-
     public void editarSalarioEmpleado(int ID,double salario){
         for(Empleado emp : this.empleados){
             if(emp.isDisponible() && ID==emp.getId()){
@@ -264,6 +215,19 @@ public class Local implements Serializable{
         return empleado;
     }
 
+    private int obtenerUltimoIdCliente() {
+        int maxId = 0;
+        for (Cliente cli : clientes) {
+            if (cli.getId() > maxId) {
+                maxId = cli.getId();
+            }
+        }
+        return maxId;
+    }
+    public void agregarCliente(Cliente c){
+        c.setId(obtenerUltimoIdCliente()+1);
+        this.clientes.add(c);
+    }
     public Cliente buscarClientePorDni(String DNI){
         Cliente cliente=null;
         for (Cliente cli : this.clientes){
@@ -281,6 +245,62 @@ public class Local implements Serializable{
         return info;
     }
 
+    public void agregarRopaAlStock (Ropa r){
+        this.stockRopa.add(r);
+    }
+    public String mostrarStockRopa() {
+        String info="";
+        int i=0;
+        for(Ropa ro : this.stockRopa){
+            info+="["+i+"] "+ro.getTipo()+", "+ro.getTalle()+", "+ro.getColorRopa()+" | $"+ro.getPrecio()+"\n";
+            i++;
+        }
+        return info;
+    }
+    public void buscarRopa(String color, String prenda, Talle talle, int stock) {
+        for (Ropa ropaAux : this.stockRopa) {
+            if (ropaAux.getColorRopa().equals(color) && ropaAux.getTipo().equals(prenda) && ropaAux.getTalle() == talle) {
+                ropaAux.setStock(stock);
+            }
+        }
+    }
+    public boolean verificarDisponibilidad (Talle talle, String tipo){
+        boolean encontrado = false;
+
+        for(Ropa ropa : this.stockRopa){
+            if(ropa.getTalle()==talle && ropa.getTipo().equalsIgnoreCase(tipo)){
+                if(ropa.getStock()>0){
+                    encontrado=true;
+                }
+            }
+        }
+
+        return encontrado;
+    }
+
+    public void procesarCompra(Compra c){
+        this.caja.agregarCompras(c);
+    }
+    public void comprarUnaRopa(Ropa ropa){
+        try{
+            ropa.validarStock(ropa.getStock());
+            ropa.bajarUnStock();
+            caja.agregarDinero(ropa.getPrecio());
+            caja.agregarRecaudacion(ropa.getPrecio());
+        }catch (eSinStock e){
+            e.printStackTrace();
+        }
+    }
+
+    public String verRecaudacion(){
+        return "Recaudacion total: "+caja.getRecaudacion();
+    }
+    public void aumentarCaja(double agregar){
+        caja.agregarRecaudacion(agregar);
+    }
+    public void bajarCaja(double sacar){
+        caja.retirarDinero(sacar);
+    }
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////MANEJO ARCHIVOS////////////////////////////////////////////////////

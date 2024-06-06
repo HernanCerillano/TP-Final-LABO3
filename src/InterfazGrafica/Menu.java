@@ -1,6 +1,6 @@
 package InterfazGrafica;
 
-import InterfazGrafica.MenuLocal.MenuLocal;
+import InterfazGrafica.GestionDeLocal.MenuDelLocal;
 import Modelo.Local;
 
 import javax.swing.*;
@@ -12,7 +12,6 @@ public class Menu extends JFrame{
     private JLabel tituloMenu;
     private JButton gestionarLocalButton;
     private JButton realizarCompraButton;
-    private JButton gestionarCajaButton;
     private JButton salirDelProgramaButton;
     private JPanel panelMenu;
     private PrimeraVez primera;
@@ -46,7 +45,7 @@ public class Menu extends JFrame{
     }
     private void abrirMenuLocal(){
 
-        JFrame frame = new MenuLocal(this, local);
+        JFrame frame = new MenuDelLocal(this, local);
         frame.setSize(1000, 600);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

@@ -1,7 +1,7 @@
-package InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados;
+package InterfazGrafica.GestionDeLocal.MenuDeEmpleados.Empleados;
 
 import InterfazGrafica.InterfazGrafica;
-import InterfazGrafica.MenuLocal.MenuDeEmpleados.GestionEmpleado;
+import InterfazGrafica.GestionDeLocal.MenuDeEmpleados.GestionEmpleado;
 import Modelo.Humanos.Empleado;
 import Modelo.Local;
 

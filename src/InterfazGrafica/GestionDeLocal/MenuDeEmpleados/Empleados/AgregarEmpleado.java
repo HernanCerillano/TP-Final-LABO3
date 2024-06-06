@@ -1,7 +1,7 @@
-package InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados;
+package InterfazGrafica.GestionDeLocal.MenuDeEmpleados.Empleados;
 
 import InterfazGrafica.InterfazGrafica;
-import InterfazGrafica.MenuLocal.MenuDeEmpleados.GestionEmpleado;
+import InterfazGrafica.GestionDeLocal.MenuDeEmpleados.GestionEmpleado;
 import Modelo.Humanos.Empleado;
 import Modelo.Local;
 
@@ -39,7 +39,7 @@ public class AgregarEmpleado extends JFrame implements InterfazGrafica {
             @Override
             public void actionPerformed(ActionEvent e) {
                 local.agregarEmpleado(cargar());
-                JOptionPane.showMessageDialog(null, "Se agrego con exito");
+                    JOptionPane.showMessageDialog(null, "Se agrego con exito");
                 local.AgregarEmpleadosAlArchivo();
             }
         });

@@ -1,11 +1,11 @@
-package InterfazGrafica.MenuLocal.MenuDeEmpleados;
+package InterfazGrafica.GestionDeLocal.MenuDeEmpleados;
 
 import InterfazGrafica.InterfazGrafica;
-import InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados.AgregarEmpleado;
-import InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados.CambiarDisponibilidad;
-import InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados.EditarEmpleado;
-import InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados.VerEmpleado;
-import InterfazGrafica.MenuLocal.MenuLocal;
+import InterfazGrafica.GestionDeLocal.MenuDeEmpleados.Empleados.AgregarEmpleado;
+import InterfazGrafica.GestionDeLocal.MenuDeEmpleados.Empleados.CambiarDisponibilidad;
+import InterfazGrafica.GestionDeLocal.MenuDeEmpleados.Empleados.EditarEmpleado;
+import InterfazGrafica.GestionDeLocal.MenuDeEmpleados.Empleados.VerEmpleado;
+import InterfazGrafica.GestionDeLocal.MenuDelLocal;
 import Modelo.Local;
 
 import javax.swing.*;
@@ -20,10 +20,10 @@ public class GestionEmpleado extends JFrame implements InterfazGrafica {
     private JButton statusButton;
     private JButton agregarEmpleadoButton;
     private JPanel mainPanel;
-    private MenuLocal menuAnterior;
+    private MenuDelLocal menuAnterior;
     private Local local;
 
-    public GestionEmpleado(MenuLocal menuAnterior, Local local){
+    public GestionEmpleado(MenuDelLocal menuAnterior, Local local){
         super("Gestion de empleados");
 
         this.local=local;

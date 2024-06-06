@@ -1,7 +1,7 @@
-package InterfazGrafica.MenuLocal.VerLocal;
+package InterfazGrafica.GestionDeLocal.VerLocal;
 
 import InterfazGrafica.InterfazGrafica;
-import InterfazGrafica.MenuLocal.MenuLocal;
+import InterfazGrafica.GestionDeLocal.MenuDelLocal;
 import Modelo.Local;
 
 import javax.swing.*;
@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 public class VerLocal extends JFrame implements InterfazGrafica {
     private Local local;
-    private MenuLocal menuAnterior;
+    private MenuDelLocal menuAnterior;
     private JButton volverButton;
     private JPanel panel1;
     private JButton editarLocalButton;
@@ -19,7 +19,7 @@ public class VerLocal extends JFrame implements InterfazGrafica {
     private JTextField horarioText;
     private JTextField alturaText;
 
-    public VerLocal(MenuLocal menuAnterior,Local local){
+    public VerLocal(MenuDelLocal menuAnterior, Local local){
         super("Gestion del Local");
 
         this.menuAnterior = menuAnterior;
@@ -44,6 +44,7 @@ public class VerLocal extends JFrame implements InterfazGrafica {
                 local.setDireccion(direccionText.getText());
                 local.setAltura(Integer.parseInt(alturaText.getText()));
                 local.setHorarios(horarioText.getText());
+                local.AgregarLocalAlArchivo();
             }
         });
     }

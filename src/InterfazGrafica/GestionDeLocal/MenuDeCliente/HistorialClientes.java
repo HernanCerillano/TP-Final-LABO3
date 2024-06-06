@@ -1,9 +1,8 @@
-package InterfazGrafica.MenuLocal;
+package InterfazGrafica.GestionDeLocal.MenuDeCliente;
 
 import InterfazGrafica.InterfazGrafica;
-import InterfazGrafica.MenuLocal.MenuDeEmpleados.GestionEmpleado;
+import InterfazGrafica.GestionDeLocal.MenuDelLocal;
 import Modelo.Humanos.Cliente;
-import Modelo.Humanos.Empleado;
 import Modelo.Local;
 
 import javax.swing.*;
@@ -17,9 +16,9 @@ public class HistorialClientes extends JFrame implements InterfazGrafica {
     private JList list1;
     private JPanel mainPanel;
     private Local local;
-    private MenuLocal menuAnterior;
+    private MenuDelLocal menuAnterior;
 
-    public HistorialClientes(MenuLocal menuAnterior, Local local){
+    public HistorialClientes(MenuDelLocal menuAnterior, Local local){
         super("Menu de alta o baja de empleados");
 
         this.menuAnterior = menuAnterior;
@@ -36,8 +35,7 @@ public class HistorialClientes extends JFrame implements InterfazGrafica {
         verHistorialDeClientesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                local.ObtenerClientesDelArchivo();
-                imprimirClientes();
+                imprimirClientesFinal();
             }
         });
         exportarHistorialEnJSonButton.addActionListener(new ActionListener() {
@@ -56,7 +54,14 @@ public class HistorialClientes extends JFrame implements InterfazGrafica {
                 modelo.addElement(cli.getDni() + cli.getNombre() + cli.getApellido());
         }
     }
-
+    public void imprimirClientesFinal(){
+        try {
+            local.ObtenerClientesDelArchivo();
+            imprimirClientes();
+        }catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "No hay clientes en el archivo, no se puede imprimir nada", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     public void volverAtras(){
         menuAnterior.setVisible(true);
         this.dispose();
