@@ -1,4 +1,5 @@
-import InterfazGrafica.Menu;
+
+import InterfazGrafica.PrimeraVez;
 import Modelo.Humanos.Cliente;
 import Modelo.Finanzas.Compra;
 import Modelo.Humanos.Empleado;
@@ -7,8 +8,7 @@ import Modelo.Mercaderia.Ropa;
 import Modelo.Mercaderia.Talle;
 
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
-import java.io.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,11 +16,11 @@ public class Main {
 
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-
+        Local local;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new Menu();
+                JFrame frame = new PrimeraVez();
                 frame.setSize(1000, 600);
                 frame.setVisible(true);
                 frame.setLocationRelativeTo(null);

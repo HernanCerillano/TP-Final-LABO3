@@ -1,6 +1,7 @@
 package InterfazGrafica;
 
 import InterfazGrafica.MenuLocal.MenuLocal;
+import Modelo.Local;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -8,9 +9,18 @@ import java.awt.event.ActionListener;
 
 public class Menu extends JFrame{
 
-    public Menu(){
-        super("Menu Principal");
+    private JLabel tituloMenu;
+    private JButton gestionarLocalButton;
+    private JButton realizarCompraButton;
+    private JButton gestionarCajaButton;
+    private JButton salirDelProgramaButton;
+    private JPanel panelMenu;
+    private PrimeraVez primera;
+    private Local local;
 
+    public Menu(PrimeraVez primera, Local local){
+        super("Menu Principal");
+        this.local = local;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(panelMenu);
@@ -34,23 +44,17 @@ public class Menu extends JFrame{
             }
         });
     }
-    private void abrirMenuLocal(){
+    public void abrirMenuLocal(){
 
-        JFrame frame = new MenuLocal(this);
+        JFrame frame = new MenuLocal(this, local);
         frame.setSize(1000, 600);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         this.setVisible(false);
     }
 
-    private void cerrarPrograma(){
+    public void cerrarPrograma(){
         this.setVisible(false);
         this.dispose();
     }
-    private JLabel tituloMenu;
-    private JButton gestionarLocalButton;
-    private JButton realizarCompraButton;
-    private JButton gestionarCajaButton;
-    private JButton salirDelProgramaButton;
-    private JPanel panelMenu;
 }
