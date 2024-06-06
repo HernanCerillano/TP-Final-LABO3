@@ -2,6 +2,7 @@ package InterfazGrafica.MenuLocal.MenuDeEmpleados;
 
 import InterfazGrafica.InterfazGrafica;
 import InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados.AgregarEmpleado;
+import InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados.CambiarDisponibilidad;
 import InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados.EditarEmpleado;
 import InterfazGrafica.MenuLocal.MenuDeEmpleados.Empleados.VerEmpleado;
 import InterfazGrafica.MenuLocal.MenuLocal;
@@ -54,6 +55,12 @@ public class GestionEmpleado extends JFrame implements InterfazGrafica {
                 abrirEditarEmpleados();
             }
         });
+        statusButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirAltaYBajaDeEmpleados();
+            }
+        });
     }
 
     private void abrirAgregarEmpleados(){
@@ -77,6 +84,15 @@ public class GestionEmpleado extends JFrame implements InterfazGrafica {
     private void abrirEditarEmpleados(){
 
         JFrame frame = new EditarEmpleado(this, local);
+        frame.setSize(1000, 600);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }
+
+    private void abrirAltaYBajaDeEmpleados(){
+
+        JFrame frame = new CambiarDisponibilidad(this, local);
         frame.setSize(1000, 600);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

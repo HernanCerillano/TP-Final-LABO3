@@ -223,6 +223,18 @@ public class Local implements Serializable{
             }
         }
     }
+    public void cambiarDisponibilidad(int id){
+        for(Empleado emp : this.empleados){
+            if(id==emp.getId()){
+                boolean aux = emp.isDisponible();
+                if(true==aux){
+                    emp.setDisponible(false);
+                }else{
+                    emp.setDisponible(true);
+                }
+            }
+        }
+    }
     public boolean hayEmpleadosDadosDeBaja() {
         boolean hayDadosDeBaja = false;
         for (Empleado empleado : empleados) {

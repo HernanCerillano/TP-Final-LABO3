@@ -68,7 +68,6 @@ public class EditarEmpleado extends JFrame implements InterfazGrafica {
 
         if (nombre.isEmpty() && apellido.isEmpty() && dni.isEmpty() && salarioStr.isEmpty() && horario.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No se proporcionaron datos para editar.");
-            return;
         }
 
         try {
