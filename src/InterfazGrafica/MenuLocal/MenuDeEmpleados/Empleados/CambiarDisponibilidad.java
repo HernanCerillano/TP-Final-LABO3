@@ -34,12 +34,12 @@ public class CambiarDisponibilidad extends JFrame implements InterfazGrafica {
             }
         });
 
-        //modelo.addElement();
         verEmpleadosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 local.ObtenerEmpleadosDelArchivo();
                 imprimirEmpleadosDeAlta();
+                imprimirEmpleadosDeBaja();
             }
         });
         cambiarButton.addActionListener(new ActionListener() {
@@ -47,6 +47,8 @@ public class CambiarDisponibilidad extends JFrame implements InterfazGrafica {
             public void actionPerformed(ActionEvent e) {
                 int id = Integer.parseInt(cambiarDispText.getText());
                 local.cambiarDisponibilidad(id);
+                local.AgregarEmpleadosAlArchivo();
+                JOptionPane.showMessageDialog(null, "Se cambio con exito al empleado");
             }
         });
     }
