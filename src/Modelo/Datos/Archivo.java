@@ -4,16 +4,18 @@ import java.io.*;
 
 public class Archivo<T> {
 
-    private void leerArchivo(File file) {
+    public T leerArchivo(File file) {
+        T data = null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            T data = (T) ois.readObject();
-            JOptionPane.showMessageDialog(null, "Los datos son del archivo: " + file.getName());
+            data = (T) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Error en la lectura del archivo: " + e.getMessage());
         }
+        JOptionPane.showMessageDialog(null, "Los datos son del archivo: " + file.getName());
+        return data;
     }
 
-    private void escribirArchivo(File file, T data) {
+    public void escribirArchivo(File file, T data) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             oos.writeObject(data);
             JOptionPane.showMessageDialog(null, "Los datos escritos estan en el archivo: " + file.getName());
@@ -22,7 +24,7 @@ public class Archivo<T> {
         }
     }
 
-    private void crearArchivo(String fileName) {
+    public void crearArchivo(String fileName) {
         File file = new File(fileName);
         try {
             if (file.createNewFile()) {
@@ -35,7 +37,7 @@ public class Archivo<T> {
         }
     }
 
-    private void borrarArchivo(File file) {
+    public void borrarArchivo(File file) {
         if (file.delete()) {
             JOptionPane.showMessageDialog(null, "El archivo borrado es: " + file.getName());
         } else {
@@ -43,7 +45,7 @@ public class Archivo<T> {
         }
     }
 
-    private void renombrarAchivo(File file, String newName) {
+    public void renombrarAchivo(File file, String newName) {
         File newFile = new File(file.getParent(), newName);
         if (file.renameTo(newFile)) {
             JOptionPane.showMessageDialog(null, "Archivo renombrado como: " + newName);
@@ -52,7 +54,7 @@ public class Archivo<T> {
         }
     }
 
-    private void copiarArchivo(File sourceFile, File destFile) {
+    public void copiarArchivo(File sourceFile, File destFile) {
         try (FileInputStream fis = new FileInputStream(sourceFile);
              FileOutputStream fos = new FileOutputStream(destFile)) {
             byte[] buffer = new byte[1024];

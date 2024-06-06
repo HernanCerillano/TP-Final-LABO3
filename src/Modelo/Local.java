@@ -1,5 +1,6 @@
 package Modelo;
 
+import Modelo.Datos.Archivo;
 import Modelo.Excepciones.eSinStock;
 import Modelo.Finanzas.Caja;
 import Modelo.Finanzas.Compra;
@@ -284,296 +285,57 @@ public class Local implements Serializable{
 
     ///////////////////////////////MANEJO ARCHIVOS////////////////////////////////////////////////////
 
-    public void AgregarLocalAlArchivo(){
-        ObjectOutputStream objectOutputStream = null;
-        try
-        {
-            FileOutputStream fileOutputStream = new FileOutputStream("Informacion_Local.dat");
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+    public void AgregarLocalAlArchivo() {
+        Archivo<Local> archivo = new Archivo<>();
+        archivo.escribirArchivo(new File("Informacion_Local.dat"), this);
+    }
 
-
-                objectOutputStream.writeObject(this);
-
-
+    public Local ObtenerLocalDelArchivo() {
+        Archivo<Local> archivo = new Archivo<>();
+        Local local = archivo.leerArchivo(new File("Informacion_Local.dat"));
+        if (local == null) {
+            local = new Local();
         }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch (IOException exception)
-        {
-            exception.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                objectOutputStream.close();
-            }
-            catch (IOException ex)
-            {
+        return local;
+    }
 
-            }
+    public void AgregarRopaAlArchivo() {
 
+        Archivo<ArrayList<Ropa>> archivo = new Archivo<>();
+        archivo.escribirArchivo(new File("Stock_De_Ropa.dat"), this.stockRopa);
+    }
+
+    public void ObtenerRopaDelArchivo() {
+        Archivo<ArrayList<Ropa>> archivo = new Archivo<>();
+        this.stockRopa = archivo.leerArchivo(new File("Stock_De_Ropa.dat"));
+        if (this.stockRopa == null) {
+            this.stockRopa = new ArrayList<>();
         }
     }
-    public Local ObtenerLocalDelArchivo(){
-        Local lo = null;
-        ObjectInputStream objectInputStream = null;
 
-        try {
-            FileInputStream fileInputStream = new FileInputStream("Informacion_Local.dat");
-            objectInputStream = new ObjectInputStream(fileInputStream);
-
-            lo = (Local) objectInputStream.readObject();
-
-            if (lo == null) {
-                lo.stockRopa = new ArrayList<>();
-                lo.empleados = new HashSet<>();
-                lo.clientes = new HashSet<>();
-            }
-
-        } catch (EOFException ex) {
-
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-
-            ex.printStackTrace();
-        } catch (ClassNotFoundException e) {
-
-        } finally {
-            try {
-                if (objectInputStream != null) {
-                    objectInputStream.close();
-                }
-            } catch (IOException ex) {
-
-            }
-        }
-        return lo;
+    public void AgregarEmpleadosAlArchivo() {
+        Archivo<HashSet<Empleado>> archivo = new Archivo<>();
+        archivo.escribirArchivo(new File("Registro_Empleados.dat"), this.empleados);
     }
-    public void AgregarRopaAlArchivo (){
-        ObjectOutputStream objectOutputStream = null;
-        try
-        {
-            FileOutputStream fileOutputStream = new FileOutputStream("Stock_De_Ropa.dat");
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            for(Ropa ro : this.stockRopa) {
-                objectOutputStream.writeObject(ro);
-            }
-
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch (IOException exception)
-        {
-            exception.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                objectOutputStream.close();
-            }
-            catch (IOException ex)
-            {
-
-            }
-
+    public void ObtenerEmpleadosDelArchivo() {
+        Archivo<HashSet<Empleado>> archivo = new Archivo<>();
+        this.empleados = archivo.leerArchivo(new File("Registro_Empleados.dat"));
+        if (this.empleados == null) {
+            this.empleados = new HashSet<>();
         }
     }
-    public void ObtenerRopaDelArchivo (){
-        ObjectInputStream objectInputStream = null;
 
-        try {
-            FileInputStream fileInputStream = new FileInputStream("Stock_De_Ropa.dat");
-            objectInputStream = new ObjectInputStream(fileInputStream);
-
-            this.stockRopa.clear();
-
-            while (true) {
-                Ropa ropa = (Ropa) objectInputStream.readObject();
-                this.stockRopa.add(ropa);
-
-            }
-
-
-        } catch (EOFException ex)
-        {
-
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch (IOException exception)
-        {
-            exception.printStackTrace();
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        } finally
-        {
-            try
-            {
-                objectInputStream.close();
-            }
-            catch (IOException ex)
-            {
-
-            }
-
-        }
+    public void AgregarClientesAlArchivo() {
+        Archivo<HashSet<Cliente>> archivo = new Archivo<>();
+        archivo.escribirArchivo(new File("Registro_Clientes.dat"), this.clientes);
     }
-    public void AgregarEmpleadosAlArchivo (){
-        ObjectOutputStream objectOutputStream = null;
-        try
-        {
-            FileOutputStream fileOutputStream = new FileOutputStream("Registro_Empleados.dat");
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            for(Empleado emp : this.empleados) {
-                objectOutputStream.writeObject(emp);
-            }
-
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch (IOException exception)
-        {
-            exception.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                objectOutputStream.close();
-            }
-            catch (IOException ex)
-            {
-
-            }
-
-        }
-    }
-    public void ObtenerEmpleadosDelArchivo (){
-        ObjectInputStream objectInputStream = null;
-
-        try {
-            FileInputStream fileInputStream = new FileInputStream("Registro_Empleados.dat");
-            objectInputStream = new ObjectInputStream(fileInputStream);
-
-            this.empleados.clear();
-
-            while (true) {
-                Empleado emp = (Empleado) objectInputStream.readObject();
-                this.empleados.add(emp);
-
-            }
-
-
-        } catch (EOFException ex)
-        {
-
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch (IOException exception)
-        {
-            exception.printStackTrace();
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        } finally
-        {
-            try
-            {
-                objectInputStream.close();
-            }
-            catch (IOException ex)
-            {
-
-            }
-
-        }
-    }
-    public void AgregarClientesAlArchivo (){
-        ObjectOutputStream objectOutputStream = null;
-        try
-        {
-            FileOutputStream fileOutputStream = new FileOutputStream("Registro_Clientes.dat");
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-            for(Cliente cli : this.clientes) {
-                objectOutputStream.writeObject(cli);
-            }
-
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch (IOException exception)
-        {
-            exception.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                objectOutputStream.close();
-            }
-            catch (IOException ex)
-            {
-
-            }
-
-        }
-    }
     public void ObtenerClientesDelArchivo() {
-        ObjectInputStream objectInputStream = null;
-
-        try {
-            FileInputStream fileInputStream = new FileInputStream("Registro_Clientes.dat");
-            objectInputStream = new ObjectInputStream(fileInputStream);
-
-            this.clientes.clear();
-
-            while (true) {
-                Cliente cliente = (Cliente) objectInputStream.readObject();
-                this.clientes.add(cliente);
-            }
-        } catch (EOFException ex) {
-
-        } catch (FileNotFoundException ex) {
-
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream("Registro_Clientes.dat");
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-                objectOutputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException | ClassNotFoundException exception) {
-            exception.printStackTrace();
-        } finally {
-            if (objectInputStream != null) {
-                try {
-                    objectInputStream.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        Archivo<HashSet<Cliente>> archivo = new Archivo<>();
+        this.clientes = archivo.leerArchivo(new File("Registro_Clientes.dat"));
+        if (this.clientes == null) {
+            this.clientes = new HashSet<>();
         }
     }
 }
