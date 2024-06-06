@@ -1,6 +1,8 @@
 package InterfazGrafica.MenuLocal;
 
+import InterfazGrafica.InterfazGrafica;
 import InterfazGrafica.Menu;
+import InterfazGrafica.MenuLocal.MenuDeEmpleados.GestionEmpleado;
 import InterfazGrafica.MenuLocal.VerLocal.VerLocal;
 import Modelo.Local;
 
@@ -8,7 +10,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MenuLocal extends JFrame{
+public class MenuLocal extends JFrame implements InterfazGrafica {
     private Menu menuAnterior;
     private JButton historialDeClientesButton;
     private JButton volverAlMenuPrincipalButton;
@@ -36,10 +38,16 @@ public class MenuLocal extends JFrame{
                 abrirVerLocal(local);
             }
         });
+        gestionarEmpleadosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            abrirGestionEmpleados(local);
+            }
+        });
     }
 
 
-    private void abrirVerLocal(Local local){
+    public void abrirVerLocal(Local local){
 
         JFrame frame = new VerLocal(this, local);
         frame.setSize(1000, 600);
@@ -48,7 +56,16 @@ public class MenuLocal extends JFrame{
         this.setVisible(false);
     }
 
-    private void volverAtras(){
+    public void abrirGestionEmpleados(Local local){
+
+        JFrame frame = new GestionEmpleado(this, local);
+        frame.setSize(1000, 600);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }
+
+    public void volverAtras(){
         menuAnterior.setVisible(true);
         this.dispose();
     }

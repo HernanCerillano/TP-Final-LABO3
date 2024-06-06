@@ -182,6 +182,31 @@ public class Local implements Serializable{
             }
         }
     }
+    public void editarApellidoEmpleado(int ID, String Apellido){
+        for(Empleado emp : this.empleados){
+            if(emp.isDisponible() && ID==emp.getId()){
+                emp.setApellido(Apellido);
+            }
+        }
+    }
+
+    public void editarNombreEmpleado(int ID,String nombre){
+        for(Empleado emp : this.empleados){
+            if(emp.isDisponible() && ID==emp.getId()){
+                emp.setNombre(nombre);
+            }
+        }
+    }
+
+
+    public void editarDniEmpleado(int ID,String dni){
+        for(Empleado emp : this.empleados){
+            if(emp.isDisponible() && ID==emp.getId()){
+                emp.setDni(dni);
+            }
+        }
+    }
+
     public void editarSalarioEmpleado(int ID,double salario){
         for(Empleado emp : this.empleados){
             if(emp.isDisponible() && ID==emp.getId()){
@@ -216,6 +241,16 @@ public class Local implements Serializable{
         }
         return rta;
     }
+    public Empleado buscarEmpleadoPorId(int id){
+        Empleado empleado=null;
+        for (Empleado emp : this.empleados){
+            if(emp.getId()==id){
+                empleado=emp;
+            }
+        }
+        return empleado;
+    }
+
     public Cliente buscarClientePorDni(String DNI){
         Cliente cliente=null;
         for (Cliente cli : this.clientes){

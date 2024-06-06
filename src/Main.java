@@ -1,4 +1,5 @@
 
+import InterfazGrafica.Menu;
 import InterfazGrafica.PrimeraVez;
 import Modelo.Humanos.Cliente;
 import Modelo.Finanzas.Compra;
@@ -16,7 +17,9 @@ public class Main {
 
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        Local local;
+        Local local = new Local();
+        local = local.ObtenerLocalDelArchivo();
+        if(local == null){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -26,6 +29,19 @@ public class Main {
                 frame.setLocationRelativeTo(null);
             }
         });
+        local.AgregarLocalAlArchivo();
+        }else {
+            Local finalLocal = local;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    JFrame frame = new Menu(finalLocal);
+                    frame.setSize(1000, 600);
+                    frame.setVisible(true);
+                    frame.setLocationRelativeTo(null);
+                }
+            });
+        }
 
        /* Local local = new Local();
         local = local.ObtenerLocalDelArchivo();

@@ -44,7 +44,7 @@ public class PrimeraVez extends JFrame{
 
     private void abrirMenu(){
 
-        JFrame frame = new Menu(this, local);
+        JFrame frame = new Menu( local);
         frame.setSize(1000, 600);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

@@ -18,7 +18,7 @@ public class Menu extends JFrame{
     private PrimeraVez primera;
     private Local local;
 
-    public Menu(PrimeraVez primera, Local local){
+    public Menu(Local local){
         super("Menu Principal");
         this.local = local;
 

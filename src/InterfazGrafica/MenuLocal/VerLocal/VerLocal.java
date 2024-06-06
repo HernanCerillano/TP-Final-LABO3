@@ -1,5 +1,6 @@
 package InterfazGrafica.MenuLocal.VerLocal;
 
+import InterfazGrafica.InterfazGrafica;
 import InterfazGrafica.MenuLocal.MenuLocal;
 import Modelo.Local;
 
@@ -7,7 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VerLocal extends JFrame{
+public class VerLocal extends JFrame implements InterfazGrafica {
     private Local local;
     private MenuLocal menuAnterior;
     private JButton volverButton;
@@ -47,7 +48,7 @@ public class VerLocal extends JFrame{
         });
     }
 
-    private void volverAtras(){
+    public void volverAtras(){
         menuAnterior.setVisible(true);
         this.dispose();
     }
