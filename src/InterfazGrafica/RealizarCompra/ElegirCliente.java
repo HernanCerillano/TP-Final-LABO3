@@ -51,12 +51,22 @@ public class ElegirCliente extends JFrame implements InterfazGrafica {
                     local.agregarCliente(cliente);
                     local.AgregarClientesAlArchivo();
                 }
-                actualizarListaClientes();
+                actualizarListaDeClientes();
             }
         });
+        actualizarListaDeClientes();
     }
 
-    public void actualizarListaClientes(){
+    public void actualizarListaDeClientes(){
+        try {
+            local.ObtenerClientesDelArchivo();
+            imprimirClientes();
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "No hay clientes en el archivo, no se puede imprimir nada", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void imprimirClientes(){
         DefaultListModel modelo = new DefaultListModel<>();
         list1.setModel(modelo);
         modelo.removeAllElements();
@@ -95,7 +105,7 @@ public class ElegirCliente extends JFrame implements InterfazGrafica {
 
     @Override
     public void volverAtras() {
-        menuAnterior.setVisible(false);
+        menuAnterior.setVisible(true);
         this.dispose();
     }
 }

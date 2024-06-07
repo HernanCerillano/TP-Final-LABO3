@@ -43,7 +43,6 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
         setSize(1000, 600);
         setLocationRelativeTo(null); // Centrar la ventana
 
-        imprimirRopa();
 
         volverButton.addActionListener(new ActionListener() {
             @Override
@@ -55,7 +54,7 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
         comprarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                realizarCompra();
+            realizarCompraFinal();
             }
         });
 
@@ -79,7 +78,18 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
                 agregarAlCarrito();
             }
         });
+        actualizarListaDeRopa();
     }
+
+    public void actualizarListaDeRopa(){
+        try {
+            local.ObtenerRopaDelArchivo();
+            imprimirRopa();
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "No hay ropa en el archivo, no se puede imprimir nada", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
     public void volverAtras() {
         menuAnterior.setVisible(true);
@@ -146,6 +156,15 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Ingrese un ID válido.");
+        }
+    }
+
+    public void realizarCompraFinal(){
+        try {
+            realizarCompra();
+            local.AgregarLocalAlArchivo();
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "Algo fallo en la compra...", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

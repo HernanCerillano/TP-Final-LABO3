@@ -43,13 +43,13 @@ public class AgregarYVerStock extends JFrame implements InterfazGrafica {
             @Override
             public void actionPerformed(ActionEvent e) {
                 agregarRopa();
-                imprimirRopa();
+                actualizarListaDeRopa();
             }
         });
 
 
         // Inicialización de la lista de ropa
-        imprimirRopa();
+        actualizarListaDeRopa();
     }
 
     public void imprimirRopa() {
@@ -58,6 +58,15 @@ public class AgregarYVerStock extends JFrame implements InterfazGrafica {
         modelo.removeAllElements();
         for (Ropa ropa : local.getStockRopa()) {
             modelo.addElement(ropa.toString());
+        }
+    }
+
+    public void actualizarListaDeRopa(){
+        try {
+            local.ObtenerRopaDelArchivo();
+            imprimirRopa();
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "No hay ropa en el archivo, no se puede imprimir nada", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
