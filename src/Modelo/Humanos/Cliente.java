@@ -40,7 +40,7 @@ public class Cliente extends Persona {
     }
     @Override
     public String toString() {
-        return super.toString()+"\n\n"+mostrarHistorial()+"\n";
+        return getDni()+" " + getNombre()+ " "+ getApellido()+ " "+"\n\n "+mostrarHistorial()+"\n";
 
     }
 

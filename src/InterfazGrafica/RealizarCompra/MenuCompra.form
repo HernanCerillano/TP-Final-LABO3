@@ -33,7 +33,7 @@
       </hspacer>
       <component id="55c8b" class="javax.swing.JButton" binding="comprarButton" default-binding="true">
         <constraints>
-          <grid row="2" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="3" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Comprar"/>
@@ -111,14 +111,6 @@
         </constraints>
         <properties>
           <text value="Volver"/>
-        </properties>
-      </component>
-      <component id="6f77e" class="javax.swing.JButton" binding="devolucionButton" default-binding="true">
-        <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Devolucion"/>
         </properties>
       </component>
     </children>

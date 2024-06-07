@@ -58,13 +58,6 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
             }
         });
 
-        devolucionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implementar la lógica de devolución aquí
-            }
-        });
-
         eliminarDelCarritoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -163,6 +156,7 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
         try {
             realizarCompra();
             local.AgregarLocalAlArchivo();
+
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(null, "Algo fallo en la compra...", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -188,7 +182,9 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
 
         carrito.clear();
         imprimirCarrito();
-
+        compra.crearPDF(local, cliente);
         JOptionPane.showMessageDialog(null, "Compra realizada con éxito.\nTotal: $" + compra.getTotal());
+        local.agregarCliente(cliente);
+        local.AgregarClientesAlArchivo();
     }
 }

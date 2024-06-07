@@ -1,6 +1,7 @@
 package InterfazGrafica.GestionDeLocal;
 
 import InterfazGrafica.GestionDeLocal.MenuCaja.GestionCaja;
+import InterfazGrafica.GestionDeLocal.MenuDeEmpleados.GestionEmpleado;
 import InterfazGrafica.GestionDeLocal.MenuStock.MenuDeStock;
 import InterfazGrafica.InterfazGrafica;
 import InterfazGrafica.Menu;
@@ -79,7 +80,7 @@ public class MenuDelLocal extends JFrame implements InterfazGrafica {
 
     public void abrirGestionEmpleados(Local local){
 
-        JFrame frame = new HistorialClientes(this, local);
+        JFrame frame = new GestionEmpleado(this, local);
         frame.setSize(1000, 600);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
