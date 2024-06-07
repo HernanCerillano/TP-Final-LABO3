@@ -26,9 +26,11 @@ public class PrimeraVez extends JFrame{
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            local = cargarLocal();
-            cerrarPrograma();
-            abrirMenu();
+                if (validarDatos()) {
+                    local = cargarLocal();
+                    cerrarPrograma();
+                    abrirMenu();
+                }
             }
         });
         salirDelProgramaButton.addActionListener(new ActionListener() {
@@ -45,8 +47,7 @@ public class PrimeraVez extends JFrame{
     }
 
     private void abrirMenu(){
-
-        JFrame frame = new Menu( local);
+        JFrame frame = new Menu(local);
         frame.setSize(1000, 600);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
@@ -54,15 +55,50 @@ public class PrimeraVez extends JFrame{
     }
 
     private Local cargarLocal(){
-        String nombre = nombreText.getText();
-        String telefono = telefonoText.getText();
-        String direccion = direccionText.getText();
-        int altura = Integer.parseInt(alturaText.getText());
-        String horarios = horariosText.getText();
+        String nombre = nombreText.getText().trim();
+        String telefono = telefonoText.getText().trim();
+        String direccion = direccionText.getText().trim();
+        int altura = Integer.parseInt(alturaText.getText().trim());
+        String horarios = horariosText.getText().trim();
         Local local = new Local(nombre, telefono, direccion, altura, horarios);
         local.AgregarLocalAlArchivo();
         return local;
     }
 
+    private boolean validarDatos() {
+        if (nombreText.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un nombre válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!validarTelefono(telefonoText.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un teléfono válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (direccionText.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese una dirección válida.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!esEntero(alturaText.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese una altura válida (entero).", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (horariosText.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un horario válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 
+    private boolean validarTelefono(String telefono) {
+        return telefono.matches("\\d{10}");
+    }
+
+    private boolean esEntero(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

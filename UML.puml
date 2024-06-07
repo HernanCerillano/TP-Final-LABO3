@@ -1,6 +1,7 @@
 @startuml
 
-Local.left>IalmacenarInformacion
+Local.left>FileManager
+Local.>Exportable
 
 Persona --->Empleado
 
@@ -11,24 +12,39 @@ Ropa..>Talle
 
 
 class Local {
--ropa: ArrayList<Ropa>;
--caja: Caja;
--empleados: HashSet<Empleado>;
+-nombre: String;
+-telefono: String;
 -direccion: String;
 -altura: int;
 -horarios: String;
-+agregarEmpleado(): void;
-+eliminarEmpleado(): boolean;
-+agregarRopa(): void;
-+procesarCompra(): void;
-+verificarDisponibilidad(): boolean;
+-caja: Caja;
+-ropa: ArrayList<Ropa>;
+-empleados: HashSet<Empleado>;
++imprimirInformacionDelLocal();
++obtenerUltimoIdEmpleado();
++agregarEmpleado();
++obtenerUltimoIdCliente();
++agregarCliente();
++obtenerUltimoIdRopa();
++buscarRopaPorId();
++agregarRopaAlStock();
++aumentarStockRopa();
++bajarStockRopa();
++cambiarDisponibilidadEmpleado();
++darDeBajaEmpleado();
++darDeAltaEmpleado();
++buscarIdEmpleado();
 }
 class Ropa {
+-id: int;
 -stock: int;
 -tipo: String; //remera/pantalon/etc
 -talle: Talle;
 -precio: float;
 -colorRopa: String;
+-disponibilidad: boolean;
++darDeBajaRopa();
++darDeAltaRopa();
 }
 abstract class Persona{
 -id: int;
@@ -40,43 +56,58 @@ class Empleado{
 -salario: float;
 -disponible: boolean;
 -horarios: String;
-+equals(): void;
++setDisponible();
++editarApellidoEmpleado();
++editarNombreEmpleado();
++editarSalarioEmpleado();
++editarHorariosEmpleado();
 }
 class Cliente{
--historial: float;
--deudas: float;
+-historialCompras: ArrayList<Compra>;
+-compra: Compra;
++agregarAlHistorialDeCompras();
++mostrarHistorial ();
 
 }
 class Caja{
--cajaInicio: float;
--recaudacion: float;
--comprasDelDia: HashSet<Compra>;
-+agregarCompra(): void;
+-recaudacion: double;
+-retirosPorFecha: HashMap<String, Double> ;
+-ingresosPorFecha: HashMap<String, Double> ;
++calcularFecha();
++agregarRecaudacion();
++retirarDinero();
 }
 
 class Compra {
 -ordenDeCompra: String;
--cliente: Cliente;
--itemsComprados: ArrayList<Ropa>;
--total: float;
--empleadoAtencion: Empleado;
-+comprobante(): String;
-+equals(): boolean;
+-itemsComprados: HashMap<Ropa, Integer>;
+-total: double;
+-fechaDeCompra: String;
++crearPdf();
++imprimirItemsComprados();
 }
 
 enum Talle {
 XS,S,M,L,XL,XXL
 }
-interface IalmacenarInformacion {
-//para Archivos y/o JSON
-+guardar(): void;
-+cargar(): void;
+
+interface Exportable {
++exportar();
 }
 
-exception StockInsuficienteException{
-
+interface FileManager {
++guardar();
++obtener();
 }
 
+exception eEmpleadoNoEncontrado{
+}
+exception eRopaNoEncontrada{
+}
+exception eSinStock{
+}
+exception eSinTalle{
+}
 
 
 

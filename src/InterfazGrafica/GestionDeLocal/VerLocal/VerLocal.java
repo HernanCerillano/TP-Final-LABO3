@@ -43,12 +43,7 @@ public class VerLocal extends JFrame implements InterfazGrafica {
         editarLocalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                local.setNombre(nombreText.getText());
-                local.setTelefono(telefonoText.getText());
-                local.setDireccion(direccionText.getText());
-                local.setAltura(Integer.parseInt(alturaText.getText()));
-                local.setHorarios(horarioText.getText());
-                local.AgregarLocalAlArchivo();
+                cargarLocal();
             }
         });
     }
@@ -58,4 +53,51 @@ public class VerLocal extends JFrame implements InterfazGrafica {
         this.dispose();
     }
 
+    private Local cargarLocal(){
+        String nombre = nombreText.getText().trim();
+        String telefono = telefonoText.getText().trim();
+        String direccion = direccionText.getText().trim();
+        int altura = Integer.parseInt(alturaText.getText().trim());
+        String horarios = horarioText.getText().trim();
+        Local local = new Local(nombre, telefono, direccion, altura, horarios);
+        local.AgregarLocalAlArchivo();
+        return local;
+    }
+
+    private boolean validarDatos() {
+        if (nombreText.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un nombre válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!validarTelefono(telefonoText.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un teléfono válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (direccionText.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese una dirección válida.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!esEntero(alturaText.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese una altura válida (entero).", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (horarioText.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un horario válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validarTelefono(String telefono) {
+        return telefono.matches("\\d{10}");
+    }
+
+    private boolean esEntero(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
