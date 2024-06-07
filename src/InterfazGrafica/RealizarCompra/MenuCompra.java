@@ -169,7 +169,7 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
 
         carrito.clear();
         imprimirCarrito();
-        
+
         JOptionPane.showMessageDialog(null, "Compra realizada con éxito.\nTotal: $" + compra.getTotal());
     }
 }
