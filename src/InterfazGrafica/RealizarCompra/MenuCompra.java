@@ -55,6 +55,7 @@ public class MenuCompra extends JFrame implements InterfazGrafica {
             @Override
             public void actionPerformed(ActionEvent e) {
             realizarCompraFinal();
+            local.AgregarRopaAlArchivo();
             }
         });
 

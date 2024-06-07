@@ -180,7 +180,7 @@ public class Local implements Serializable, Exportable , FileManager {
         for (Ropa prenda : stockRopa) {
             if (prenda.getId() == idPrenda && prenda.getStock()>0) {
                 prenda.setStock(prenda.getStock() - 1);
-            }else if(prenda.getStock()>=0){
+            }else if(prenda.getStock()<=0){
                 prenda.setDisponibilidad(false);
             }
         }
