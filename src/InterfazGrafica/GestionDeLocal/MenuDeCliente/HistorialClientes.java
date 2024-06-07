@@ -41,6 +41,7 @@ public class HistorialClientes extends JFrame implements InterfazGrafica {
         exportarHistorialEnJSonButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                local.exportarClientes();
                 JOptionPane.showMessageDialog(null, "Se exporto con exito");
             }
         });

@@ -14,6 +14,8 @@ public class PrimeraVez extends JFrame{
     private JPanel menuPrimera;
     private JButton agregarButton;
     private JButton salirDelProgramaButton;
+    private JTextField telefonoText;
+    private JTextField nombreText;
     private Local local;
 
     public PrimeraVez(){
@@ -52,10 +54,15 @@ public class PrimeraVez extends JFrame{
     }
 
     private Local cargarLocal(){
+        String nombre = nombreText.getText();
+        String telefono = telefonoText.getText();
         String direccion = direccionText.getText();
         int altura = Integer.parseInt(alturaText.getText());
         String horarios = horariosText.getText();
-        Local local = new Local(direccion, altura, horarios);
+        Local local = new Local(nombre, telefono, direccion, altura, horarios);
+        local.AgregarLocalAlArchivo();
         return local;
     }
+
+
 }

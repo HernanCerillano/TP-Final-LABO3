@@ -42,6 +42,7 @@ public class MenuDeStock extends JFrame implements InterfazGrafica {
         exportarAJSonElButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                local.exportarStockRopa();
                 JOptionPane.showMessageDialog(null, "Se exporto con exito");
             }
         });

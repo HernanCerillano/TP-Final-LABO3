@@ -77,7 +77,7 @@ public class EditarEmpleado extends JFrame implements InterfazGrafica {
                 local.editarApellidoEmpleado(id, apellido);
             }
             if (!dni.isEmpty()) {
-                local.editarDniEmpleado(id, dni);
+                local.editarDNIEmpleado(id, dni);
             }
             if (!salarioStr.isEmpty()) {
                 double salario = Double.parseDouble(salarioStr);

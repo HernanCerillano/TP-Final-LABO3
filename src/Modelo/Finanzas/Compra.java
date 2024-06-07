@@ -5,13 +5,12 @@ import Modelo.Humanos.Empleado;
 import Modelo.Local;
 import Modelo.Mercaderia.Ropa;
 
+import java.awt.Font;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.UUID;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Paragraph;
+import java.util.*;
+import com.lowagie.text.*;
+import com.lowagie.text.Image;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.ColumnText;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
@@ -21,50 +20,59 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import com.lowagie.text.Image;
+import java.awt.Desktop;
+
 
 public class Compra implements Serializable {
 
     private String ordenDeCompra;
-    private ArrayList<Ropa> itemsComprados;
+    private HashMap<Ropa, Integer> itemsComprados;
     private double total;
-    private Empleado empleadoAtencion;
     private String fechaDeCompra;
 
     public Compra() {
     }
-    public Compra(ArrayList<Ropa> itemsComprados, Empleado empleadoAtencion) {
+    public Compra(HashMap<Ropa, Integer> itemsComprados) {
         this.ordenDeCompra=calcularOrdenDeCompra();
         this.itemsComprados = itemsComprados;
         this.total = calcularTotal();
-        this.empleadoAtencion = empleadoAtencion;
         this.fechaDeCompra=calcularFecha();
     }
-
     public String getOrdenDeCompra (){
         return this.ordenDeCompra;
     }
-    public String getItemsComprados(){
-        String info="\n";
-        for(Ropa ro : this.itemsComprados){
-            info+=ro.getTipo()+", "+ro.getTalle()+", "+ro.getColorRopa()+" | $"+ro.getPrecio()+"\n";
+    public HashMap<Ropa, Integer> getItemsComprados() {
+        return itemsComprados;
+    }
+    public String imprimirItemsComprados() {
+        StringBuilder info = new StringBuilder("\n");
+        for (Map.Entry<Ropa, Integer> entry : itemsComprados.entrySet()) {
+            Ropa prenda = entry.getKey();
+            int cantidad = entry.getValue();
+            if (prenda.isDisponibilidad()) {
+                info.append(prenda.toStringParaListaDeCompra());
+                if (cantidad > 1) {
+                    info.append(" x").append(cantidad).append("\n");
+                } else {
+                    info.append("\n");
+                }
+            }
         }
-        return info;
+        return info.toString();
     }
     public double getTotal() {
         return total;
     }
-    public String getEmpleadoAtencion(){
-        return this.empleadoAtencion.getNombre()+" "+this.empleadoAtencion.getApellido();
-    }
     public String getFechaDeCompra() {
         return fechaDeCompra;
     }
-    public double calcularTotal (){
-        double total=0;
+    public double calcularTotal() {
+        double total = 0;
 
-        for (Ropa ro : this.itemsComprados){
-            total+=ro.getPrecio();
+        for (Map.Entry<Ropa, Integer> entry : itemsComprados.entrySet()) {
+            Ropa prenda = entry.getKey();
+            int cantidad = entry.getValue();
+            total += prenda.getPrecio() * cantidad;
         }
 
         return total;
@@ -78,8 +86,17 @@ public class Compra implements Serializable {
         String fechaFormateada = fechaActual.format(formatter);
         return fechaFormateada;
     }
-    public void agregarItems(Ropa ro){
-        this.itemsComprados.add(ro);
+    public void agregarItems(Ropa ro) {
+        int cantidad = itemsComprados.getOrDefault(ro, 0);
+        itemsComprados.put(ro, cantidad + 1);
+    }
+    public void eliminarItem(Ropa item) {
+        int cantidad = itemsComprados.getOrDefault(item, 0);
+        if (cantidad > 1) {
+            itemsComprados.put(item, cantidad - 1);
+        } else if (cantidad == 1) {
+            itemsComprados.remove(item);
+        }
     }
     public void crearPDF (Local local, Cliente cliente){
 
@@ -106,51 +123,51 @@ public class Compra implements Serializable {
             try {
                 String imagePath = currentDir + "/logo.png";
                 Image logo = Image.getInstance(imagePath);
-                logo.setAbsolutePosition(466, 750);
+                logo.setAbsolutePosition(466, 705);
                 logo.scaleToFit(80, 80);
                 document.add(logo);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            document.add(new Paragraph("LOCAL VENTA DE ROPA\nDireccion: "+local.getDireccion()+" "+local.getAltura()+"\nHorarios: "+local.getHorarios()+"\n\n"));
+            com.lowagie.text.Font largeBoldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Font.BOLD);
+            Paragraph localName = new Paragraph(local.getNombre(), largeBoldFont);
+            localName.setAlignment(Element.ALIGN_CENTER);
+            document.add(localName);
+
+            document.add(new Paragraph("\nDireccion: " + local.getDireccion() + " " + local.getAltura() + "\n" +
+                    "Horarios: " + local.getHorarios() + "\n" +
+                    "Contacto: " + local.getTelefono() + "\n\n"));
 
             cb.setLineWidth(1f);
-            cb.moveTo(36, 740);
-            cb.lineTo(559, 740);
+            cb.moveTo(36, 655);
+            cb.lineTo(559, 655);
             cb.stroke();
 
             document.add(new Paragraph("                                                              RECIBO DE PAGO\n\n"));
 
             cb.setLineWidth(1f);
-            cb.moveTo(36, 700);
-            cb.lineTo(559, 700);
+            cb.moveTo(36, 695);
+            cb.lineTo(559, 695);
             cb.stroke();
 
             document.add(new Paragraph("\nOrden de compra: "+getOrdenDeCompra()+"\n\n"+"Fecha: " + this.fechaDeCompra + "\n\nCliente: "+cliente.getApellido()+" "+cliente.getNombre()+"\n\n"));
 
-            cb.setLineWidth(1f);
-            cb.moveTo(36, 575);
-            cb.lineTo(559, 575);
-            cb.stroke();
-
-            document.add(new Paragraph("Items Comprados:\n\n"+getItemsComprados()));
+            document.add(new Paragraph(imprimirItemsComprados()));
 
             cb.setLineWidth(1f);
             float x = 36;
-            float y = 540;
+            float y = 520;
             float width = 523;
             float height = 450;
             cb.rectangle(x, y - height, width, height);
             cb.stroke();
 
             cb.setLineWidth(1f);
-            cb.moveTo(36, 140);
-            cb.lineTo(559, 140);
+            cb.moveTo(36, 125);
+            cb.lineTo(559, 125);
             cb.stroke();
-            ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, new Paragraph(" TOTAL: $"+calcularTotal()), 36, 120, 0);
-            ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, new Paragraph(" Empleado: "+this.empleadoAtencion.getApellido()+" "+this.empleadoAtencion.getNombre()), 36, 105, 0);
-
+            ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, new Paragraph(" TOTAL: $"+calcularTotal()), 36, 100, 0);
             document.close();
 
             if (Desktop.isDesktopSupported()) {

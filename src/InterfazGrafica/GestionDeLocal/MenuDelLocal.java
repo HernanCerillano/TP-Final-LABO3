@@ -1,5 +1,6 @@
 package InterfazGrafica.GestionDeLocal;
 
+import InterfazGrafica.GestionDeLocal.MenuCaja.GestionCaja;
 import InterfazGrafica.GestionDeLocal.MenuStock.MenuDeStock;
 import InterfazGrafica.InterfazGrafica;
 import InterfazGrafica.Menu;
@@ -61,7 +62,7 @@ public class MenuDelLocal extends JFrame implements InterfazGrafica {
         manejarCajaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                abrirManejoDeCaja(local);
             }
         });
     }
@@ -97,6 +98,15 @@ public class MenuDelLocal extends JFrame implements InterfazGrafica {
     public void abrirGestionDeStock(Local local){
 
         JFrame frame = new MenuDeStock(this, local);
+        frame.setSize(1000, 600);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }
+
+    public void abrirManejoDeCaja(Local local){
+
+        JFrame frame = new GestionCaja(this, local);
         frame.setSize(1000, 600);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

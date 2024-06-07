@@ -18,6 +18,8 @@ public class VerLocal extends JFrame implements InterfazGrafica {
     private JTextField direccionText;
     private JTextField horarioText;
     private JTextField alturaText;
+    private JTextField nombreText;
+    private JTextField telefonoText;
 
     public VerLocal(MenuDelLocal menuAnterior, Local local){
         super("Gestion del Local");
@@ -41,6 +43,8 @@ public class VerLocal extends JFrame implements InterfazGrafica {
         editarLocalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                local.setNombre(nombreText.getText());
+                local.setTelefono(telefonoText.getText());
                 local.setDireccion(direccionText.getText());
                 local.setAltura(Integer.parseInt(alturaText.getText()));
                 local.setHorarios(horarioText.getText());

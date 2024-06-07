@@ -44,7 +44,6 @@ public class VerEmpleado extends JFrame implements InterfazGrafica {
     }
 
     public void imprimirEmpleados(){
-        String info="";
         DefaultListModel modelo = new DefaultListModel<>();
         probando.setModel(modelo);
         modelo.removeAllElements();

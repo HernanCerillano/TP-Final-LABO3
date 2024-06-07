@@ -2,6 +2,7 @@ package InterfazGrafica.GestionDeLocal.MenuDeEmpleados.Empleados;
 
 import InterfazGrafica.InterfazGrafica;
 import InterfazGrafica.GestionDeLocal.MenuDeEmpleados.GestionEmpleado;
+import Modelo.Excepciones.eEmpleadoNoEncontrado;
 import Modelo.Humanos.Empleado;
 import Modelo.Local;
 
@@ -45,14 +46,10 @@ public class CambiarDisponibilidad extends JFrame implements InterfazGrafica {
         cambiarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int id = Integer.parseInt(cambiarDispText.getText());
-                local.cambiarDisponibilidad(id);
-                local.AgregarEmpleadosAlArchivo();
-                JOptionPane.showMessageDialog(null, "Se cambio con exito al empleado");
-            }
-        });
+            cambiar();
+        }
+    });
     }
-
     public void imprimirEmpleadosDeAlta(){
         DefaultListModel modelo = new DefaultListModel<>();
         listaAlta.setModel(modelo);
@@ -79,5 +76,15 @@ public class CambiarDisponibilidad extends JFrame implements InterfazGrafica {
         menuAnterior.setVisible(true);
         this.dispose();
     }
+    public void cambiar(){
+            int id = Integer.parseInt(cambiarDispText.getText());
+            try {
+                local.cambiarDisponibilidadEmpleado(id);
+            } catch (eEmpleadoNoEncontrado ex) {
+                throw new RuntimeException(ex);
+            }
+            local.AgregarEmpleadosAlArchivo();
+            JOptionPane.showMessageDialog(null, "Se cambio con exito al empleado");
+        }
 
 }

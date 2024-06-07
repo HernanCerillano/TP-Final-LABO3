@@ -28,7 +28,7 @@
       </hspacer>
       <component id="bb7b8" class="javax.swing.JList" binding="list1" default-binding="true">
         <constraints>
-          <grid row="2" column="3" row-span="3" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="2" column="3" row-span="4" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
@@ -138,14 +138,6 @@
         </constraints>
         <properties>
           <text value="Volver"/>
-        </properties>
-      </component>
-      <component id="74ff9" class="javax.swing.JButton" binding="actualizarListaButton" default-binding="true">
-        <constraints>
-          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Actualizar lista"/>
         </properties>
       </component>
     </children>
